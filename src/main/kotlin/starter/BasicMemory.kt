@@ -19,7 +19,7 @@ var CreepMemory.role by memory(Role.UNASSIGNED)
 
 /* Power creep is a late game hero unit that is spawned from a Power Spawn
    see https://docs.screeps.com/power.html for more details.
-   This set sets up the memory for the PowerCreep.memory class.
+   This set up the memory for the PowerCreep.memory class.
  */
 var PowerCreepMemory.test : Int by memory { 0 }
 
