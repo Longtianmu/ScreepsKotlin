@@ -34,6 +34,9 @@ fun Creep.build(assignedRoom: Room = this.room) {
                 ERR_NOT_IN_RANGE -> {
                     moveTo(temp)
                 }
+                ERR_NOT_ENOUGH_RESOURCES -> {
+                    memory.movePos = "WTF"
+                }
             }
         }
     }

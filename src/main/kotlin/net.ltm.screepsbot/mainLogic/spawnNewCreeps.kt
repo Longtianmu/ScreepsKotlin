@@ -20,10 +20,10 @@ fun spawnCreeps(
 
         creeps.count { it.memory.role == Role.UPGRADER } < 2 -> Role.UPGRADER
 
+        creeps.count { it.memory.role == Role.REPAIRER } < 1 -> Role.REPAIRER
+
         spawn.room.find(FIND_MY_CONSTRUCTION_SITES).isNotEmpty() &&
                 creeps.count { it.memory.role == Role.BUILDER } < 2 -> Role.BUILDER
-
-        creeps.count { it.memory.role == Role.REPAIRER } < 1 -> Role.REPAIRER
 
         creeps.count { it.memory.role == Role.SWEEPER } < 1 -> Role.SWEEPER
         else -> return

@@ -38,11 +38,13 @@ fun getUsableContainer(room: Room): String {
     val spawnCache = room.find(FIND_MY_STRUCTURES)
         .filter { it.structureType == STRUCTURE_SPAWN }
         .map { it.unsafeCast<StoreOwner>() }
-        .sortedBy { it.store.getFreeCapacity(RESOURCE_ENERGY) }
+        .filter { it.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }
+        .sortedByDescending { it.store.getUsedCapacity(RESOURCE_ENERGY) }
     val containerCache = room.find(FIND_STRUCTURES)
         .filter { it.structureType == STRUCTURE_CONTAINER }
         .map { it.unsafeCast<StoreOwner>() }
-        .sortedBy { it.store.getFreeCapacity(RESOURCE_ENERGY) }
+        .filter { it.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }
+        .sortedByDescending { it.store.getUsedCapacity(RESOURCE_ENERGY) }
     id = if (containerCache.isNotEmpty()) {
         containerCache[0].id
     } else if (room.storage != null) {
