@@ -1,12 +1,9 @@
-import starter.gameLoop
+import net.ltm.screepsbot.mainLogic.gameLoop
+import net.ltm.screepsbot.memory.scriptTicks
+import screeps.api.Memory
 
-/**
- * Entry point
- * is called by screeps
- *
- * must not be removed by DCE
- */
 @Suppress("unused")
 fun loop() {
+    Memory.scriptTicks++
     gameLoop()
 }

@@ -1,5 +1,4 @@
 import java.net.URL
-import java.security.SecureRandom
 import java.util.*
 import javax.net.ssl.*
 
@@ -22,11 +21,9 @@ val screepsPassword: String? by project
 val screepsToken: String? by project
 val screepsHost: String? by project
 val screepsBranch: String? by project
-val screepsSkipSslVerify: Boolean? by project
 val branch = screepsBranch ?: "default"
 val host = screepsHost ?: "https://screeps.com"
 val minifiedJsDirectory: String = File(buildDir, "minified-js").absolutePath
-val skipSsl = screepsSkipSslVerify ?: false
 
 kotlin {
     js {
@@ -104,15 +101,8 @@ tasks.register("deploy") {
          *
          */
         val url = URL("$host/api/user/code")
-        if (skipSsl){
-            val ctx = SSLContext.getInstance("TLS")
-            ctx.init(null, arrayOf(TrustAllTrustManager) , SecureRandom())
-            HttpsURLConnection.setDefaultSSLSocketFactory(ctx.socketFactory)
-        }
         val connection: HttpsURLConnection = url.openConnection() as HttpsURLConnection
-        if(skipSsl){
-            connection.hostnameVerifier = HostnameVerifier { _, _ -> true } // accept all
-        }
+        connection.hostnameVerifier = HostnameVerifier { _, _ -> true } // accept all
         connection.doOutput = true
         connection.requestMethod = "POST"
         connection.setRequestProperty("Content-Type", "application/json; charset=utf-8")
