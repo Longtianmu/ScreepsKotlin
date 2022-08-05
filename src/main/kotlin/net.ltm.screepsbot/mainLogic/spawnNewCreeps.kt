@@ -18,7 +18,7 @@ fun spawnCreeps(
     val role: Role = when {
         creeps.count { it.memory.role == Role.HARVESTER } < 8 -> Role.HARVESTER
 
-        creeps.count { it.memory.role == Role.UPGRADER } < 2 -> Role.UPGRADER
+        creeps.count { it.memory.role == Role.UPGRADER } < 5 -> Role.UPGRADER
 
         creeps.count { it.memory.role == Role.REPAIRER } < 1 -> Role.REPAIRER
 
