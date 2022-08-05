@@ -8,11 +8,11 @@ import screeps.api.*
 fun Creep.build(assignedRoom: Room = this.room) {
     if (memory.building && store[RESOURCE_ENERGY] == 0) {
         memory.building = false
-        say("🔄获取资源")
+        say("🔄获取资源", true)
     }
     if (!memory.building && store[RESOURCE_ENERGY] == store.getCapacity()) {
         memory.building = true
-        say("🚧开始建造")
+        say("🚧开始建造", true)
     }
 
     if (memory.building) {

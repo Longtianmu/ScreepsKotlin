@@ -8,7 +8,7 @@ import screeps.api.Creep
 fun Creep.pause() {
     if (memory.pause < 10) {
         //blink slowly
-        if (memory.pause % 3 != 0) say("\uD83D\uDEAC")
+        if (memory.pause % 3 != 0) say("\uD83D\uDEAC", true)
         memory.pause++
     } else {
         memory.pause = 0

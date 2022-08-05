@@ -45,7 +45,7 @@ fun Creep.sweep(assignedRoom: Room = this.room) {
             memory.to = findClosestNotEmpty(
                 room.findGeneralStoreOwner()
                     .map { it.unsafeCast<StoreOwner>() }
-                    .filter { it.store.getFreeCapacity() > 0 }
+                    .filter { it?.store?.getFreeCapacity() > 0 }
                     .toTypedArray()
             ).id
         } else {

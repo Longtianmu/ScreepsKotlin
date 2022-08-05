@@ -14,11 +14,11 @@ fun getNextTarget(room: Room): String {
         .map { it.unsafeCast<StoreOwner>() }
         .filter { it.store.getFreeCapacity(RESOURCE_ENERGY) > 0 }
         .sortedByDescending { it.store.getFreeCapacity(RESOURCE_ENERGY) }
-    val containerCache = room.find(FIND_MY_STRUCTURES)
+    val containerCache = room.find(FIND_STRUCTURES)
         .filter { it.structureType == STRUCTURE_CONTAINER }
         .map { it.unsafeCast<StoreOwner>() }
-        .filter { it.store.getFreeCapacity(RESOURCE_ENERGY) > 0 }
-        .sortedByDescending { it.store.getFreeCapacity(RESOURCE_ENERGY) }
+        .filter { it.store.getFreeCapacity() > 0}
+        .sortedByDescending { it.store.getFreeCapacity() }
     id = if (spawnCache.isNotEmpty()) {
         spawnCache[0].id
     } else if (extensionCache.isNotEmpty()) {
@@ -39,7 +39,7 @@ fun getUsableContainer(room: Room): String {
         .filter { it.structureType == STRUCTURE_SPAWN }
         .map { it.unsafeCast<StoreOwner>() }
         .sortedBy { it.store.getFreeCapacity(RESOURCE_ENERGY) }
-    val containerCache = room.find(FIND_MY_STRUCTURES)
+    val containerCache = room.find(FIND_STRUCTURES)
         .filter { it.structureType == STRUCTURE_CONTAINER }
         .map { it.unsafeCast<StoreOwner>() }
         .sortedBy { it.store.getFreeCapacity(RESOURCE_ENERGY) }

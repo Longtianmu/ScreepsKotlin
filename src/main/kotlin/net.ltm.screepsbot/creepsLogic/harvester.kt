@@ -24,14 +24,14 @@ fun Creep.harvest(fromRoom: Room = this.room, toRoom: Room = this.room) {
                     }
 
                     OK -> {
-                        memory.movePos = room.find(FIND_SOURCES).random().id
+                        memory.movePos = "WTF"
                     }
                 }
             }
 
             is Source -> {
                 var transferOrNot = false
-                if (store.getFreeCapacity(RESOURCE_ENERGY) == 0) {
+                if (store.getFreeCapacity() == 0) {
                     transferOrNot = true
                 } else {
                     when (harvest(temp)) {
