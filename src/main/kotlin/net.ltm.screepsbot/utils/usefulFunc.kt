@@ -17,7 +17,7 @@ fun getNextTarget(room: Room): String {
     val containerCache = room.find(FIND_STRUCTURES)
         .filter { it.structureType == STRUCTURE_CONTAINER }
         .map { it.unsafeCast<StoreOwner>() }
-        .filter { it.store.getFreeCapacity() > 0}
+        .filter { it.store.getFreeCapacity() > 0 }
         .sortedByDescending { it.store.getFreeCapacity() }
     id = if (spawnCache.isNotEmpty()) {
         spawnCache[0].id

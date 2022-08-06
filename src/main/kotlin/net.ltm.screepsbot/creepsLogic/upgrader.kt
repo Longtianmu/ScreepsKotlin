@@ -6,7 +6,6 @@ import screeps.api.*
 import screeps.api.structures.Structure
 import screeps.api.structures.StructureController
 
-
 fun Creep.upgrade(controller: StructureController) {
     when (upgradeController(controller)) {
         ERR_NOT_ENOUGH_ENERGY -> {

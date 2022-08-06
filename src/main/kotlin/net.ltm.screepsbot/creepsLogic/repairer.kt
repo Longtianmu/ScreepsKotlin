@@ -17,7 +17,7 @@ fun Creep.repairer() {
                 .filter { it.hits < it.hitsMax }
                 .toTypedArray()
         )
-        if (target!=null && repair(target) == ERR_NOT_IN_RANGE) {
+        if (target != null && repair(target) == ERR_NOT_IN_RANGE) {
             moveTo(target)
         }
     }

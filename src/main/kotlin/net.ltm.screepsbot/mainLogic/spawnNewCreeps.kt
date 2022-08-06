@@ -6,10 +6,15 @@ import screeps.api.*
 import screeps.api.structures.StructureSpawn
 import screeps.utils.unsafe.jsObject
 
-fun spawnCreeps(
-    creeps: Array<Creep>,
-    spawn: StructureSpawn
-) {
+fun spawnCreeps(creeps: Array<Creep>, spawn: StructureSpawn) {
+
+}
+
+fun spawnCreepsHigh(creeps: Array<Creep>, spawn: StructureSpawn) {
+
+}
+
+fun spawnCreepsLow(creeps: Array<Creep>, spawn: StructureSpawn) {
     var baseBody = arrayOf<BodyPartConstant>(WORK, CARRY, MOVE)
     if (spawn.room.energyAvailable < baseBody.sumOf { BODYPART_COST[it]!! }) {
         return
@@ -25,7 +30,7 @@ fun spawnCreeps(
         spawn.room.find(FIND_MY_CONSTRUCTION_SITES).isNotEmpty() &&
                 creeps.count { it.memory.role == Role.BUILDER } < 2 -> Role.BUILDER
 
-        creeps.count { it.memory.role == Role.SWEEPER } < 1 -> Role.SWEEPER
+        //creeps.count { it.memory.role == Role.SWEEPER } < 1 -> Role.SWEEPER
         else -> return
     }
 

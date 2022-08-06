@@ -2,54 +2,32 @@ package net.ltm.screepsbot.mainLogic
 
 import net.ltm.screepsbot.constant.Role
 import net.ltm.screepsbot.creepsLogic.*
-import net.ltm.screepsbot.memory.numberOfCreeps
 import net.ltm.screepsbot.memory.role
-import screeps.api.*
-import screeps.api.structures.StructureSpawn
+import net.ltm.screepsbot.utils.cleanUnusedCreeps
+import screeps.api.FIND_MY_SPAWNS
+import screeps.api.Game
+import screeps.api.values
 
 fun gameLoop() {
-    val mainSpawn: StructureSpawn = Game.spawns["MainHome"]!!
-
-    houseKeeping(Game.creeps)
-
-    mainSpawn.room.memory.numberOfCreeps = mainSpawn.room.find(FIND_CREEPS).count()
-
-    spawnCreeps(Game.creeps.values, mainSpawn)
-
-    val controller = mainSpawn.room.controller
-
-    /*for ((_, room) in Game.rooms) {
-        if (room.energyAvailable >= 550) {
-            val name = "大型Creep_${Game.time}"
-            mainSpawn.spawnCreep(
-                arrayOf(
-                    WORK,
-                    WORK,
-                    WORK,
-                    CARRY,
-                    MOVE,
-                    MOVE,
-                    MOVE
-                ),
-                name,
-                options {
-                    memory = jsObject<CreepMemory> {
-                        this.role = Role.HARVESTER
-                    }
-                }
-            )
-            console.log("生成了大型Creeps:$name")
+    val rooms = Game.rooms.values
+    cleanUnusedCreeps(Game.creeps)
+    for (room in rooms) {
+        if (room.controller?.my != true) continue
+        val roomCreeps = Game.creeps.values.filter { it.room == room }
+        val currentController = room.controller
+        val spawns = room.find(FIND_MY_SPAWNS)
+        for (spawn in spawns) {
+            spawnCreeps(roomCreeps.toTypedArray(), spawn)
         }
-    }*/
-
-    for ((_, creep) in Game.creeps) {
-        when (creep.memory.role) {
-            Role.HARVESTER -> creep.harvest()
-            Role.BUILDER -> creep.build()
-            Role.UPGRADER -> creep.upgrade(controller!!)
-            Role.SWEEPER -> creep.sweep()
-            Role.REPAIRER -> creep.repairer()
-            else -> creep.pause()
+        for (creep in roomCreeps) {
+            when (creep.memory.role) {
+                Role.HARVESTER -> creep.harvest()
+                Role.BUILDER -> creep.build()
+                Role.UPGRADER -> creep.upgrade(currentController!!)
+                Role.SWEEPER -> creep.sweep()
+                Role.REPAIRER -> creep.repairer()
+                else -> creep.pause()
+            }
         }
     }
 }
