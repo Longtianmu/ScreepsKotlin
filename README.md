@@ -1,2 +1,18 @@
 # Longtianmu‘s Screeps Bot
-Forked from https://github.com/exaV/screeps-kotlin-starter
+Baseed from https://github.com/exaV/screeps-kotlin-starter
+
+我不装了写中文吧
+
+v1：
+基于状态的角色配置
+
+eg. 根据挖矿的ReturnCode进行下一步判定
+根据Role进行动作分配
+
+基于random的资源分配 随机挑选点
+
+v2：TODO
+
+基于任务列表，配置文件的爬
+
+智能切换生成逻辑
