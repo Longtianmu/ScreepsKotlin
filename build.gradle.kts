@@ -4,7 +4,7 @@ import javax.net.ssl.*
 
 
 plugins {
-    kotlin("js") version "1.6.10"
+    kotlin("js") version "1.7.10"
 }
 
 repositories {
