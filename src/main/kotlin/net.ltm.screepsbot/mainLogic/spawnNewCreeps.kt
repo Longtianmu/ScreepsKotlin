@@ -28,6 +28,8 @@ fun spawnCreepsHigh(creeps: List<Creep>, spawn: StructureSpawn) {
 
         creeps.count { it.memory.roleClass == "RoleCarrier" } < 2 -> "RoleCarrier"
 
+        creeps.count { it.memory.roleClass == "RoleBuilder" } < 2 -> "RoleBuilder"
+
         else -> return
     }
 

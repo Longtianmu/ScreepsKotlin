@@ -1,12 +1,10 @@
 package net.ltm.screepsbot.constant
 
-import net.ltm.screepsbot.profiles.childProfiles.RoleCarrier
-import net.ltm.screepsbot.profiles.childProfiles.RoleHarvester1
-import net.ltm.screepsbot.profiles.childProfiles.RoleHarvester2
-import net.ltm.screepsbot.profiles.childProfiles.RoleUpgrader
+import net.ltm.screepsbot.profiles.childProfiles.*
 import screeps.api.ResourceConstant
+import screeps.utils.mutableRecordOf
 
-val resourceMap = mutableMapOf<String, ResourceConstant>()
+val resourceMap = mutableRecordOf<String, ResourceConstant>()
 
 val workRange = mapOf(
     Pair(Step.HARVEST.name, 1),
@@ -22,5 +20,6 @@ val manualReflect = mapOf(
     Pair("RoleHarvester1", RoleHarvester1()),
     Pair("RoleHarvester2", RoleHarvester2()),
     Pair("RoleUpgrader", RoleUpgrader()),
-    Pair("RoleCarrier", RoleCarrier())
+    Pair("RoleCarrier", RoleCarrier()),
+    Pair("RoleBuilder", RoleBuilder())
 )

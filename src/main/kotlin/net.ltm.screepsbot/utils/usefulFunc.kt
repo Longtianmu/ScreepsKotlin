@@ -45,10 +45,11 @@ fun getUsableContainer(room: Room): String {
         .map { it.unsafeCast<StoreOwner>() }
         .filter { it.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }
         .sortedByDescending { it.store.getUsedCapacity(RESOURCE_ENERGY) }
-    id = if (containerCache.isNotEmpty()) {
-        containerCache[0].id
-    } else if (room.storage != null) {
+
+    id = if (room.storage != null) {
         room.storage!!.id
+    } else if (containerCache.isNotEmpty()) {
+        containerCache[0].id
     } else if (spawnCache.isNotEmpty()) {
         spawnCache[0].id
     } else {

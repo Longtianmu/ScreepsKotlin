@@ -13,6 +13,14 @@ private fun findKSource(creep: Creep, k: Int): Source? {
     return sources[k]
 }
 
+private fun letFunc(creep: Creep, source: Source, type: String) {
+    creep.assignStepOption(Step.HARVEST, "Target", source.id, false)
+    getNearbyContainer(source)?.let {
+        creep.assignStepOption(Step.TRANSFER, "Target", it.id, false)
+        creep.assignStepOption(Step.TRANSFER, "Type", type, false)
+    }
+}
+
 class RoleHarvester1 : HarvesterProfile() {
     override fun initGenerator(creep: Creep) {
         findKSource(creep, 0)?.let { source ->
