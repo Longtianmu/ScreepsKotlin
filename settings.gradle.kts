@@ -1,1 +1,1 @@
-rootProject.name = "ScreepsKotlinPack"
+rootProject.name = "ScreepsKotlin"
