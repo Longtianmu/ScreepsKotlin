@@ -8,10 +8,8 @@ import net.ltm.screepsbot.memory.maxCountMap
 import net.ltm.screepsbot.memory.role
 import net.ltm.screepsbot.memory.roleClass
 import net.ltm.screepsbot.utils.cleanUnusedCreeps
-import screeps.api.FIND_MY_SPAWNS
-import screeps.api.Game
-import screeps.api.size
-import screeps.api.values
+import screeps.api.*
+import screeps.api.structures.StructureTower
 
 fun gameLoop() {
     val rooms = Game.rooms.values
@@ -21,6 +19,9 @@ fun gameLoop() {
         val roomCreeps = Game.creeps.values.filter { it.room == room }
         val currentController = room.controller
         val spawns = room.find(FIND_MY_SPAWNS)
+        val towers = room.find(FIND_MY_STRUCTURES)
+            .filter { it.structureType == STRUCTURE_TOWER }
+            .map { it.unsafeCast<StructureTower>() }
         if (room.memory.maxCountMap.size != maxCountMap.size) {
             room.memory.maxCountMap = maxCountMap
         }
@@ -51,6 +52,18 @@ fun gameLoop() {
                     }
                 }
             }
+        }
+        for (tower in towers) {
+            val creepEnemy = room.find(FIND_HOSTILE_CREEPS).sortedByDescending { it.hits }
+            val powerCreepEnemy = room.find(FIND_HOSTILE_POWER_CREEPS).sortedByDescending { it.hits }
+            val creep = roomCreeps.filter { it.hits < it.hitsMax }.sortedBy { it.hits }
+            val powerCreep = room.find(FIND_MY_POWER_CREEPS).filter { it.hits < it.hitsMax }.sortedBy { it.hits }
+            val brokenBuilds = room.find(FIND_STRUCTURES).filter { it.hits < it.hitsMax }.sortedBy { it.hits }
+            powerCreepEnemy.firstOrNull()?.let { tower.attack(it) }
+            creepEnemy.firstOrNull()?.let { tower.attack(it) }
+            powerCreep.firstOrNull()?.let { tower.heal(it) }
+            creep.firstOrNull()?.let { tower.heal(it) }
+            brokenBuilds.firstOrNull()?.let { tower.repair(it) }
         }
     }
     if (Game.cpu.bucket == 10000) {

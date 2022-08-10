@@ -28,9 +28,10 @@ var RoomMemory.maxCountMap: MutableRecord<String, Int> by memory {
         Pair("RoleHarvester1", 3),
         Pair("RoleHarvester2", 3),
         Pair("RoleUpgrader", 3),
-        Pair("RoleCarrier", 4),
+        Pair("RoleCarrier", 6),
         Pair("RoleBuilder", 3),
-        Pair("RoleRepairer", 1)
+        Pair("RoleRepairer", 1),
+        Pair("RoleFiller", 1)
     )
 }
 
@@ -38,9 +39,10 @@ val maxCountMap: MutableRecord<String, Int> = mutableRecordOf(
     Pair("RoleHarvester1", 3),
     Pair("RoleHarvester2", 3),
     Pair("RoleUpgrader", 3),
-    Pair("RoleCarrier", 4),
+    Pair("RoleCarrier", 6),
     Pair("RoleBuilder", 3),
-    Pair("RoleRepairer", 1)
+    Pair("RoleRepairer", 1),
+    Pair("RoleFiller", 1)
 )
 
 

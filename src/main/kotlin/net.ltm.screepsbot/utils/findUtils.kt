@@ -13,3 +13,15 @@ fun Room.findGeneralStoreOwner(): List<StoreOwner?> {
     return findStructure(STRUCTURE_CONTAINER)
         .map { it.unsafeCast<StoreOwner>() }
 }
+
+fun Room.findStructureNeedFills(): String {
+    val towers = this.find(FIND_MY_STRUCTURES)
+        .filter { it.structureType == STRUCTURE_TOWER }
+        .map { it.unsafeCast<StoreOwner>() }
+        .sortedBy { it.store.getUsedCapacity(RESOURCE_ENERGY) }
+    return if (towers.isNotEmpty()) {
+        towers.first().id
+    } else {
+        "null"
+    }
+}
