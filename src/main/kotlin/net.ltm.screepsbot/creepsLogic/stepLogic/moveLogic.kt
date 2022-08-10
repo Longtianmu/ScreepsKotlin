@@ -11,7 +11,9 @@ fun stepMove(creep: Creep): StepReturnCode {
         return StepReturnCode.ERR_NEED_RESET
     }
     val targetID = creep.memory.option[Step.MOVE.name]?.get("Target")
-    val targetRange = creep.memory.option[Step.MOVE.name]?.get("Range")!!.toInt()
+    val targetRange = if (creep.memory.option[Step.MOVE.name]?.get("Range") != null) {
+        creep.memory.option[Step.MOVE.name]?.get("Range")!!.toInt()
+    } else 1
     return if (targetID.isNullOrEmpty()) {
         StepReturnCode.ERR_NEED_RESET
     } else {

@@ -5,23 +5,25 @@ import net.ltm.screepsbot.constant.StepReturnCode
 import net.ltm.screepsbot.memory.option
 import screeps.api.*
 
-fun stepTransfer(creep: Creep): TickReturnCode {
-    val temp = creep.memory.option[Step.TRANSFER.name]
-    val targetID = temp?.get("Target")
-    val amount = temp?.get("Amount")
-    val type = resourceMap[temp?.get("Type")]!!
-    val target = Game.getObjectById<Identifiable>(targetID).unsafeCast<StoreOwner?>()
-    return if (amount.isNullOrEmpty()) {
-        when (creep.transfer(target!!, type)) {
-            ERR_INVALID_TARGET -> TickReturnCode.ERR_NEED_RESET
-            ERR_NOT_IN_RANGE -> TickReturnCode.ERR_NEED_MOVE
-            else -> TickReturnCode.OK
-        }
-    } else {
-        when (creep.transfer(target!!, type, amount.toInt())) {
-            ERR_INVALID_TARGET -> TickReturnCode.ERR_NEED_RESET
-            ERR_NOT_IN_RANGE -> TickReturnCode.ERR_NEED_MOVE
-            else -> TickReturnCode.OK
+fun stepTransfer(creep: Creep): StepReturnCode {
+    creep.memory.option[Step.TRANSFER.name]?.let {
+        val targetID = it["Target"]
+        val amount = it["Amount"]
+        val type = it["Type"].unsafeCast<ResourceConstant>()
+        Game.getObjectById<Identifiable>(targetID)?.let { target ->
+            return if (amount.isNullOrEmpty()) {
+                when (creep.transfer(target.unsafeCast<StoreOwner>(), type)) {
+                    ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
+                    ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
+                    else -> StepReturnCode.SKIP_TICK
+                }
+            } else {
+                when (creep.transfer(target.unsafeCast<StoreOwner>(), type, amount.toInt())) {
+                    ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
+                    ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
+                    else -> StepReturnCode.SKIP_TICK
+                }
+            }
         }
     }
     return StepReturnCode.ERR_NEED_RESET

@@ -10,7 +10,6 @@ import screeps.utils.mutableRecordOf
 
 fun initials(creep: Creep, roleCls: Profile) {
     if (!creep.memory.init) {
-        println("init${creep.name}")
         creep.memory.taskList = roleCls.preTask.toTypedArray() // taskList
         roleCls.initGenerator(creep) // option
         creep.memory.init = true
@@ -94,6 +93,11 @@ fun Creep.tick(): TickReturnCode {
                 assignStepOption(Step.MOVE, "Target", target)
                 assignStepOption(Step.MOVE, "Range", workRange[currentTask].toString())
             }
+        }
+
+        StepReturnCode.SKIP_TICK -> {
+            memory.taskList = memory.taskList.toList().drop(1).toTypedArray()
+            return TickReturnCode.REWORK
         }
     }
     return TickReturnCode.OK

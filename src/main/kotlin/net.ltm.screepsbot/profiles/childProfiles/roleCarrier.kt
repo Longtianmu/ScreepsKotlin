@@ -14,7 +14,7 @@ class RoleCarrier : CarrierProfile() {
     override fun loopGenerator(creep: Creep) {
         creep.findClosest(creep.room.findStructure(STRUCTURE_CONTAINER)
             .filter {
-                it.unsafeCast<StoreOwner>().store.getUsedCapacity() > 0
+                it.unsafeCast<StoreOwner>().store.getUsedCapacity(RESOURCE_ENERGY) > 0
             }
         )?.let {
             creep.assignStepOption(Step.WITHDRAW, "Target", it.id)

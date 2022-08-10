@@ -25,7 +25,6 @@ fun spawnCreepsHigh(creeps: List<Creep>, spawn: StructureSpawn) {
     for (i in 1 until rate) {
         body = body.plus(baseBody)
     }
-
     val maxCreepCount = spawn.room.memory.maxCountMap
     val roleClass: String = when {
         creeps.count { it.memory.roleClass == "RoleHarvester1" } < maxCreepCount["RoleHarvester1"] -> "RoleHarvester1"
@@ -35,6 +34,8 @@ fun spawnCreepsHigh(creeps: List<Creep>, spawn: StructureSpawn) {
         creeps.count { it.memory.roleClass == "RoleCarrier" } < maxCreepCount["RoleCarrier"] -> "RoleCarrier"
 
         creeps.count { it.memory.roleClass == "RoleUpgrader" } < maxCreepCount["RoleUpgrader"] -> "RoleUpgrader"
+
+        creeps.count { it.memory.roleClass == "RoleRepairer" } < maxCreepCount["RoleRepairer"] -> "RoleRepairer"
 
         spawn.room.find(FIND_MY_CONSTRUCTION_SITES).isNotEmpty() &&
                 creeps.count { it.memory.roleClass == "RoleBuilder" } < maxCreepCount["RoleBuilder"] -> "RoleBuilder"

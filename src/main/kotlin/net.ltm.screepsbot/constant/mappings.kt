@@ -17,5 +17,6 @@ val manualReflect = mapOf(
     Pair("RoleHarvester2", RoleHarvester2()),
     Pair("RoleUpgrader", RoleUpgrader()),
     Pair("RoleCarrier", RoleCarrier()),
-    Pair("RoleBuilder", RoleBuilder())
+    Pair("RoleBuilder", RoleBuilder()),
+    Pair("RoleRepairer", RoleRepairer())
 )

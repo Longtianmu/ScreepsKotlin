@@ -8,7 +8,7 @@ import screeps.api.*
 
 private fun findKSource(creep: Creep, k: Int): Source? {
     val sources = creep.room.find(FIND_SOURCES)
-    return sources[k]
+    return sources[k].unsafeCast<Source?>()
 }
 
 private fun letFunc(creep: Creep, source: Source, type: String) {
@@ -29,8 +29,8 @@ class RoleHarvester1 : HarvesterProfile() {
     }
 
     override fun loopGenerator(creep: Creep) {
-        findKSource(creep, 0)?.let { source ->
-            creep.assignStepOption(Step.HARVEST, "Target", source.id, false)
+        findKSource(creep, 0)?.let {
+            letFunc(creep, it, "energy")
         }
     }
 }
@@ -45,8 +45,8 @@ class RoleHarvester2 : HarvesterProfile() {
     }
 
     override fun loopGenerator(creep: Creep) {
-        findKSource(creep, 1)?.let { source ->
-            creep.assignStepOption(Step.HARVEST, "Target", source.id, false)
+        findKSource(creep, 1)?.let {
+            letFunc(creep, it, RESOURCE_ENERGY.value)
         }
     }
 }

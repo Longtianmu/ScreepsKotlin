@@ -8,12 +8,8 @@ fun Room.findStructure(type: StructureConstant): List<Structure> {
         .filter { it.structureType == type }
 }
 
-fun Room.findGeneralStoreOwner(): Array<StoreOwner?> {
-    var ret: Array<StoreOwner?> = arrayOf(storage?.unsafeCast<StoreOwner>())
-    if (storage != null) return ret // 如果有storage，那就不考虑放到container里了
-    val containers = findStructure(STRUCTURE_CONTAINER)
+fun Room.findGeneralStoreOwner(): List<StoreOwner?> {
+    if (storage != null) return listOf(storage?.unsafeCast<StoreOwner>()) // 如果有storage，那就不考虑放到container里了
+    return findStructure(STRUCTURE_CONTAINER)
         .map { it.unsafeCast<StoreOwner>() }
-    if (containers.isNotEmpty())
-        ret += containers
-    return ret
 }

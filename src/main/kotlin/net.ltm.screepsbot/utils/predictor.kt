@@ -54,11 +54,12 @@ fun predict(creep: Creep, workType: Step, target: HasPosition): Boolean {
         }
 
         Step.TRANSFER -> {
-            creep.store.getUsedCapacity() +
-                    target.unsafeCast<StoreOwner>().store.getFreeCapacity() >= target.unsafeCast<StoreOwner>().store.getCapacity(
-                RESOURCE_ENERGY
-            )
+            val tmp =
+                creep.store.getUsedCapacity() + target.unsafeCast<StoreOwner>().store.getFreeCapacity(RESOURCE_ENERGY)!!
 
+            return (tmp >= target.unsafeCast<StoreOwner>().store.getCapacity(
+                RESOURCE_ENERGY
+            ))
         }
 
         else -> return true

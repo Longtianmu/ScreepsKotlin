@@ -9,9 +9,11 @@ import screeps.api.*
 fun stepHarvest(creep: Creep): StepReturnCode {
     val targetID = creep.memory.option[Step.HARVEST.name]?.get("Target")
     val target = Game.getObjectById<Identifiable>(targetID).unsafeCast<Source>()
-    when (creep.harvest(target)) {
-        ERR_NOT_IN_RANGE -> return TickReturnCode.ERR_NEED_MOVE
-        ERR_INVALID_TARGET -> return TickReturnCode.ERR_NEED_RESET
+    val ret = when (creep.harvest(target)) {
+        ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
+        ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
+        else -> StepReturnCode.STATUS_IN_PROGRESS
     }
-    return TickReturnCode.OK
+    if (predict(creep, Step.HARVEST, target)) return StepReturnCode.SKIP_TICK
+    return ret
 }
