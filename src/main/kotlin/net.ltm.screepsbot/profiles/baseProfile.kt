@@ -14,3 +14,8 @@ abstract class HarvesterProfile : Profile() {
     override val preTask = mutableListOf(Step.MOVE.name)
     override val taskLoop = mutableListOf(Step.HARVEST.name)
 }
+
+abstract class BuilderProfile : Profile() {
+    override val preTask = mutableListOf<String>()
+    override val taskLoop = mutableListOf(Step.WITHDRAW.name, Step.BUILD.name)
+}

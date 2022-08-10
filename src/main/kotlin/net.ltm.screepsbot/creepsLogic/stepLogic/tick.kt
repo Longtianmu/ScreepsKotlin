@@ -1,10 +1,6 @@
-package net.ltm.screepsbot.creepsLogic.roleLogic
+package net.ltm.screepsbot.creepsLogic.stepLogic
 
-import net.ltm.screepsbot.constant.Step
-import net.ltm.screepsbot.constant.TickReturnCode
-import net.ltm.screepsbot.constant.manualReflect
-import net.ltm.screepsbot.constant.workRange
-import net.ltm.screepsbot.creepsLogic.stepLogic.*
+import net.ltm.screepsbot.constant.*
 import net.ltm.screepsbot.memory.*
 import net.ltm.screepsbot.profiles.Profile
 import net.ltm.screepsbot.utils.assignStepOption
@@ -25,14 +21,18 @@ fun initials(creep: Creep, roleCls: Profile) {
     creep.memory.taskRetry = 0
 }
 
-fun Creep.tick() {
-    val roleCls = manualReflect[memory.roleClass] ?: return
+fun Creep.tick(): TickReturnCode {
+    val roleCls = manualReflect[memory.roleClass]
+    if (roleCls == null) {
+        println("找不到类${memory.roleClass}")
+        return TickReturnCode.OK
+    }
     if (memory.taskList.isEmpty()) {
         initials(this, roleCls)
-        return
+        return TickReturnCode.REWORK
     }
     val currentTask = memory.taskList.first()
-    val returnCode: TickReturnCode = when (currentTask) {
+    val returnCode: StepReturnCode = when (currentTask) {
         Step.MOVE.name -> {
             stepMove(this)
         }
@@ -65,19 +65,18 @@ fun Creep.tick() {
             stepRepair(this)
         }
 
-        else -> TickReturnCode.OK // unknown Step
+        else -> StepReturnCode.OK // unknown Step
     }
 
     when (returnCode) {
-        TickReturnCode.STATUS_IN_PROGRESS -> {
-            return
+        StepReturnCode.STATUS_IN_PROGRESS -> {
         }
 
-        TickReturnCode.OK -> {
+        StepReturnCode.OK -> {
             memory.taskList = memory.taskList.toList().drop(1).toTypedArray()
         }
 
-        TickReturnCode.ERR_NEED_RESET -> {
+        StepReturnCode.ERR_NEED_RESET -> {
             memory.init = false
             val containerID = Step.TRANSFER.getTarget(this.room)
             memory.taskList = arrayOf()
@@ -88,7 +87,7 @@ fun Creep.tick() {
             }
         }
 
-        TickReturnCode.ERR_NEED_MOVE -> {
+        StepReturnCode.ERR_NEED_MOVE -> {
             if (memory.taskList[0] != Step.MOVE.name) {
                 memory.taskList = listOf(Step.MOVE.name).plus(memory.taskList.toList()).toTypedArray()
                 val target = memory.option[currentTask]?.get("Target")!!
@@ -97,4 +96,5 @@ fun Creep.tick() {
             }
         }
     }
+    return TickReturnCode.OK
 }
