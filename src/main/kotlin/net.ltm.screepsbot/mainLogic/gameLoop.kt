@@ -19,7 +19,6 @@ fun gameLoop() {
         val roomCreeps = Game.creeps.values.filter { it.room == room }
         val currentController = room.controller
         val spawns = room.find(FIND_MY_SPAWNS)
-
         for (spawn in spawns) {
             spawnCreeps(roomCreeps, spawn)
         }

@@ -4,9 +4,7 @@ import net.ltm.screepsbot.constant.Step
 import net.ltm.screepsbot.profiles.HarvesterProfile
 import net.ltm.screepsbot.utils.assignStepOption
 import net.ltm.screepsbot.utils.getNearbyContainer
-import screeps.api.Creep
-import screeps.api.FIND_SOURCES
-import screeps.api.Source
+import screeps.api.*
 
 private fun findKSource(creep: Creep, k: Int): Source? {
     val sources = creep.room.find(FIND_SOURCES)

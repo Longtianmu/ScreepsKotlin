@@ -6,9 +6,7 @@ import net.ltm.screepsbot.utils.assignStepOption
 import net.ltm.screepsbot.utils.findClosest
 import net.ltm.screepsbot.utils.findStructure
 import net.ltm.screepsbot.utils.getNextTarget
-import screeps.api.Creep
-import screeps.api.STRUCTURE_CONTAINER
-import screeps.api.StoreOwner
+import screeps.api.*
 
 class RoleCarrier : CarrierProfile() {
     override fun initGenerator(creep: Creep) {}
@@ -20,12 +18,12 @@ class RoleCarrier : CarrierProfile() {
             }
         )?.let {
             creep.assignStepOption(Step.WITHDRAW, "Target", it.id)
-            creep.assignStepOption(Step.WITHDRAW, "Type", "energy")
+            creep.assignStepOption(Step.WITHDRAW, "Type", RESOURCE_ENERGY.value)
         }
         val transfer = getNextTarget(creep.room)
         if (transfer != "null") {
             creep.assignStepOption(Step.TRANSFER, "Target", transfer)
-            creep.assignStepOption(Step.TRANSFER, "Type", "energy")
+            creep.assignStepOption(Step.TRANSFER, "Type", RESOURCE_ENERGY.value)
         }
     }
 }

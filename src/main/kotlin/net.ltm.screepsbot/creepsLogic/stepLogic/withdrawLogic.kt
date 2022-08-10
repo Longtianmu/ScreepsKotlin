@@ -2,7 +2,6 @@ package net.ltm.screepsbot.creepsLogic.stepLogic
 
 import net.ltm.screepsbot.constant.Step
 import net.ltm.screepsbot.constant.StepReturnCode
-import net.ltm.screepsbot.constant.resourceMap
 import net.ltm.screepsbot.memory.option
 import screeps.api.*
 
@@ -10,7 +9,7 @@ fun stepWithdraw(creep: Creep): StepReturnCode {
     val temp = creep.memory.option[Step.WITHDRAW.name]
     val targetID = temp?.get("Target")
     val amount = temp?.get("Amount")
-    val type = resourceMap[temp?.get("Type").toString()]!!
+    val type = temp?.get("Type").unsafeCast<ResourceConstant>()
     val target = Game.getObjectById<Identifiable>(targetID).unsafeCast<StoreOwner?>()
     return if (amount.isNullOrEmpty()) {
         when (creep.withdraw(target!!, type)) {
