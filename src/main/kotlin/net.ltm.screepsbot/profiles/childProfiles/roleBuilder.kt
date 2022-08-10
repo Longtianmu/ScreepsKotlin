@@ -14,9 +14,10 @@ class RoleBuilder : BuilderProfile() {
 
     override fun loopGenerator(creep: Creep) {
         val constructionSites = creep.room.find(FIND_MY_CONSTRUCTION_SITES)
-        val ids = constructionSites.firstOrNull() ?: return
+        val target = constructionSites.firstOrNull()
+        val id: String = target?.id ?: "null"
         creep.assignStepOption(Step.WITHDRAW, "Target", getUsableContainer(creep.room), false)
         creep.assignStepOption(Step.WITHDRAW, "Type", RESOURCE_ENERGY.value, false)
-        creep.assignStepOption(Step.BUILD, "Target", ids.id, false)
+        creep.assignStepOption(Step.BUILD, "Target", id, false)
     }
 }

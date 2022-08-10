@@ -10,15 +10,19 @@ fun stepTransfer(creep: Creep): StepReturnCode {
         val targetID = it["Target"]
         val amount = it["Amount"]
         val type = it["Type"].unsafeCast<ResourceConstant>()
-        Game.getObjectById<Identifiable>(targetID)?.let { target ->
+        val target = Game.getObjectById<Identifiable>(targetID)
+        target?.let { targets ->
+            if (targets.unsafeCast<StoreOwner>().store.getFreeCapacity() == 0) {
+                return StepReturnCode.SKIP_TICK
+            }
             return if (amount.isNullOrEmpty()) {
-                when (creep.transfer(target.unsafeCast<StoreOwner>(), type)) {
+                when (creep.transfer(targets.unsafeCast<StoreOwner>(), type)) {
                     ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
                     ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
                     else -> StepReturnCode.SKIP_TICK
                 }
             } else {
-                when (creep.transfer(target.unsafeCast<StoreOwner>(), type, amount.toInt())) {
+                when (creep.transfer(targets.unsafeCast<StoreOwner>(), type, amount.toInt())) {
                     ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
                     ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
                     else -> StepReturnCode.SKIP_TICK

@@ -8,7 +8,8 @@ import screeps.api.*
 fun stepBuild(creep: Creep): StepReturnCode {
     val targetID = creep.memory.option[Step.BUILD.name]?.get("Target")
     val target = Game.getObjectById<ConstructionSite>(targetID).unsafeCast<ConstructionSite?>()
-    return when (target?.let { creep.build(it) }) {
+        ?: return StepReturnCode.ERR_NEED_RESET
+    return when (creep.build(target)) {
         ERR_NOT_FOUND -> return StepReturnCode.ERR_NEED_RESET
         ERR_NOT_IN_RANGE -> return StepReturnCode.ERR_NEED_MOVE
         ERR_INVALID_TARGET -> return StepReturnCode.ERR_NEED_RESET

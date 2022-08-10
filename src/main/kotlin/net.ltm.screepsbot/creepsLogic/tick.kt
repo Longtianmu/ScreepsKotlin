@@ -1,6 +1,7 @@
-package net.ltm.screepsbot.creepsLogic.stepLogic
+package net.ltm.screepsbot.creepsLogic
 
 import net.ltm.screepsbot.constant.*
+import net.ltm.screepsbot.creepsLogic.stepLogic.*
 import net.ltm.screepsbot.memory.*
 import net.ltm.screepsbot.profiles.Profile
 import net.ltm.screepsbot.utils.assignStepOption
@@ -76,14 +77,16 @@ fun Creep.tick(): TickReturnCode {
         }
 
         StepReturnCode.ERR_NEED_RESET -> {
+            memory.taskRetry = 0
             memory.init = false
             val containerID = Step.TRANSFER.getTarget(this.room)
             memory.taskList = arrayOf()
             memory.option = mutableRecordOf()
             if (store.getUsedCapacity() > 0) {
-                memory.taskList = memory.taskList.toList().plus(Step.TRANSFER.name).toTypedArray()
+                memory.taskList = listOf(Step.TRANSFER.name).toTypedArray()
                 assignStepOption(Step.TRANSFER, "Target", containerID, true)
             }
+            return TickReturnCode.REWORK
         }
 
         StepReturnCode.ERR_NEED_MOVE -> {

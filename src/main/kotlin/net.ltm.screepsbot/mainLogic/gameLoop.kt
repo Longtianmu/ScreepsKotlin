@@ -3,7 +3,7 @@ package net.ltm.screepsbot.mainLogic
 import net.ltm.screepsbot.constant.Role
 import net.ltm.screepsbot.constant.TickReturnCode
 import net.ltm.screepsbot.creepsLogic.roleLogic.*
-import net.ltm.screepsbot.creepsLogic.stepLogic.tick
+import net.ltm.screepsbot.creepsLogic.tick
 import net.ltm.screepsbot.memory.maxCountMap
 import net.ltm.screepsbot.memory.role
 import net.ltm.screepsbot.memory.roleClass
@@ -59,11 +59,24 @@ fun gameLoop() {
             val creep = roomCreeps.filter { it.hits < it.hitsMax }.sortedBy { it.hits }
             val powerCreep = room.find(FIND_MY_POWER_CREEPS).filter { it.hits < it.hitsMax }.sortedBy { it.hits }
             val brokenBuilds = room.find(FIND_STRUCTURES).filter { it.hits < it.hitsMax }.sortedBy { it.hits }
-            powerCreepEnemy.firstOrNull()?.let { tower.attack(it) }
-            creepEnemy.firstOrNull()?.let { tower.attack(it) }
-            powerCreep.firstOrNull()?.let { tower.heal(it) }
-            creep.firstOrNull()?.let { tower.heal(it) }
-            brokenBuilds.firstOrNull()?.let { tower.repair(it) }
+            if (powerCreepEnemy.isNotEmpty()) {
+                tower.attack(powerCreepEnemy.first())
+            } else if (creepEnemy.isNotEmpty()) {
+                tower.attack(creepEnemy.first())
+            } else if (powerCreep.isNotEmpty()) {
+                tower.heal(powerCreep.first())
+            } else if (creep.isNotEmpty()) {
+                tower.heal(creep.first())
+            } else if (brokenBuilds.isNotEmpty()) {
+                val it = brokenBuilds.first()
+                if (it.structureType in listOf(STRUCTURE_WALL, STRUCTURE_RAMPART)) {
+                    if (Game.time % 10 == 0) {
+                        tower.repair(it)
+                    }
+                } else {
+                    tower.repair(it)
+                }
+            }
         }
     }
     if (Game.cpu.bucket == 10000) {

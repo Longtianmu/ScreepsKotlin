@@ -7,7 +7,7 @@ import net.ltm.screepsbot.memory.taskRetry
 import screeps.api.*
 
 fun stepMove(creep: Creep): StepReturnCode {
-    if (creep.memory.taskRetry > 3) {
+    if (creep.memory.taskRetry > 4) {
         return StepReturnCode.ERR_NEED_RESET
     }
     val targetID = creep.memory.option[Step.MOVE.name]?.get("Target")
@@ -22,6 +22,7 @@ fun stepMove(creep: Creep): StepReturnCode {
         if (creep.pos.inRangeTo(target.pos, targetRange)) {
             return StepReturnCode.SKIP_TICK
         }
+        ALGORITHM_ASTAR
         when (creep.moveTo(target)) {
             OK -> StepReturnCode.STATUS_IN_PROGRESS
             ERR_NO_PATH -> {
