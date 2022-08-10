@@ -1,18 +1,19 @@
+import net.ltm.screepsbot.constant.resourceMap
 import net.ltm.screepsbot.mainLogic.gameLoop
-import net.ltm.screepsbot.memory.resourceMap
-
 import screeps.api.RESOURCES_ALL
 import screeps.api.value
 
-var buildResourceMap = true
+var buildResourceMap = false
 
-@Suppress("unused")
+@OptIn(ExperimentalJsExport::class)
+@JsName("loop")
+@JsExport
 fun loop() {
-    if (buildResourceMap) {
+    if (!buildResourceMap) {
         for (i in RESOURCES_ALL) {
             resourceMap[i.value] = i
         }
-        buildResourceMap = false
+        buildResourceMap = true
     }
     gameLoop()
 }

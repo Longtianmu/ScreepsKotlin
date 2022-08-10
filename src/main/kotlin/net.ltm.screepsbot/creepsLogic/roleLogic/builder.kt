@@ -1,4 +1,4 @@
-package net.ltm.screepsbot.creepsLogic
+package net.ltm.screepsbot.creepsLogic.roleLogic
 
 import net.ltm.screepsbot.memory.building
 import net.ltm.screepsbot.memory.movePos

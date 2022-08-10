@@ -17,7 +17,7 @@ fun stepMove(creep: Creep): TickReturnCode {
     } else {
         val target = Game.getObjectById<Identifiable>(targetID).unsafeCast<HasPosition>()
         if (creep.pos.inRangeTo(target.pos, targetRange)) {
-            TickReturnCode.OK
+            return TickReturnCode.OK
         }
         when (creep.moveTo(target)) {
             OK -> TickReturnCode.STATUS_IN_PROGRESS

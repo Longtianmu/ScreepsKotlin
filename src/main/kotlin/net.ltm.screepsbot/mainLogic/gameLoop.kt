@@ -1,15 +1,15 @@
 package net.ltm.screepsbot.mainLogic
 
 import net.ltm.screepsbot.constant.Role
-import net.ltm.screepsbot.creepsLogic.*
+import net.ltm.screepsbot.creepsLogic.roleLogic.*
 import net.ltm.screepsbot.memory.role
+import net.ltm.screepsbot.memory.roleClass
 import net.ltm.screepsbot.utils.cleanUnusedCreeps
 import screeps.api.FIND_MY_SPAWNS
 import screeps.api.Game
 import screeps.api.values
 
 fun gameLoop() {
-
     val rooms = Game.rooms.values
     cleanUnusedCreeps(Game.creeps)
     for (room in rooms) {
@@ -19,7 +19,7 @@ fun gameLoop() {
         val spawns = room.find(FIND_MY_SPAWNS)
 
         for (spawn in spawns) {
-            spawnCreeps(roomCreeps.toTypedArray(), spawn)
+            spawnCreeps(roomCreeps, spawn)
         }
         for (creep in roomCreeps) {
             when (creep.memory.role) {

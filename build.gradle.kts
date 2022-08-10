@@ -1,9 +1,9 @@
+import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.X509TrustManager
-
 
 plugins {
     kotlin("js") version "1.7.10"
@@ -16,8 +16,6 @@ repositories {
 
 dependencies {
     implementation("io.github.exav:screeps-kotlin-types:1.13.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
-    testImplementation(kotlin("test-js"))
 }
 
 val screepsUser: String? by project
@@ -27,13 +25,12 @@ val screepsHost: String? by project
 val screepsBranch: String? by project
 val branch = screepsBranch ?: "default"
 val host = screepsHost ?: "https://screeps.com"
-val minifiedJsDirectory: String = File(buildDir, "minified-js").absolutePath
+val minifiedJsDirectory: String = File(buildDir, "compileSync/main/developmentExecutable/kotlin").absolutePath
 
 kotlin {
     js {
         useCommonJs()
         browser {
-            @Suppress("EXPERIMENTAL_API_USAGE")
             dceTask {
                 dceOptions {
                     outputDirectory = minifiedJsDirectory
@@ -42,18 +39,13 @@ kotlin {
                     "${project.name}.loop"
                 )
             }
-
-            testTask {
-                useMocha()
-            }
         }
+        binaries.executable()
     }
 }
 
-
 val processDceKotlinJs by tasks.getting(org.jetbrains.kotlin.gradle.dsl.KotlinJsDce::class)
 fun String.encodeBase64() = Base64.getEncoder().encodeToString(this.toByteArray())
-
 
 tasks.register("deploy") {
     group = "screeps"
@@ -105,8 +97,14 @@ tasks.register("deploy") {
          *
          */
         val url = URL("$host/api/user/code")
-        val connection: HttpsURLConnection = url.openConnection() as HttpsURLConnection
-        connection.hostnameVerifier = HostnameVerifier { _, _ -> true } // accept all
+        val connection = if (host.contains("https://")) {
+            url.openConnection() as HttpsURLConnection
+        } else {
+            url.openConnection() as HttpURLConnection
+        }
+        if (connection is HttpsURLConnection) {
+            connection.hostnameVerifier = HostnameVerifier { _, _ -> true } // accept all
+        }
         connection.doOutput = true
         connection.requestMethod = "POST"
         connection.setRequestProperty("Content-Type", "application/json; charset=utf-8")

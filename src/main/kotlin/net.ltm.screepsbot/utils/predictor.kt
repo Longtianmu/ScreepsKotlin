@@ -1,7 +1,7 @@
 package net.ltm.screepsbot.utils
 
 import net.ltm.screepsbot.constant.Step
-import net.ltm.screepsbot.memory.workRange
+import net.ltm.screepsbot.constant.workRange
 import screeps.api.*
 import screeps.api.structures.Structure
 import kotlin.math.min
@@ -19,38 +19,37 @@ val workPower = mapOf(
 // 预测下一tick是否能进行这个work
 fun predict(creep: Creep, workType: Step, target: HasPosition): Boolean {
     if (!creep.pos.inRangeTo(target.pos, workRange[workType.name]!!.toInt() + 1)) return false
-    return when (workType) {
+    when (workType) {
         in listOf(Step.BUILD, Step.UPGRADE_CONTROLLER, Step.REPAIR) -> {
             if (creep.store.getUsedCapacity(RESOURCE_ENERGY)!! -
                 workPower[workType.name]!! * creep.getActiveBodyparts(WORK) < 0
             ) {
                 return false
             }
-            when (workType) {
+            return when (workType) {
                 Step.BUILD -> (target.unsafeCast<ConstructionSite>().progress + min(
                     workPower[workType.name]!! * creep.getActiveBodyparts(WORK),
                     creep.store.getUsedCapacity(RESOURCE_ENERGY)!!
-                ) <= target.unsafeCast<ConstructionSite>().progressTotal)
+                ) >= target.unsafeCast<ConstructionSite>().progressTotal)
 
                 Step.REPAIR -> (target.unsafeCast<Structure>().hits + 100 * min(
                     workPower[workType.name]!! * creep.getActiveBodyparts(WORK),
                     creep.store.getUsedCapacity(RESOURCE_ENERGY)!!
-                ) <= target.unsafeCast<Structure>().hitsMax)
+                ) >= target.unsafeCast<Structure>().hitsMax)
 
                 else -> true
             }
         }
 
         Step.HARVEST -> {
-            if (creep.getActiveBodyparts(CARRY) == 0) {
+            return if (creep.getActiveBodyparts(CARRY) == 0) {
                 true
             } else {
-                creep.store.getUsedCapacity() +
-                        if (isSourceObject(target.unsafeCast<Identifiable>())) {
-                            workPower[workType.name]!! * creep.getActiveBodyparts(WORK)
-                        } else {
-                            creep.getActiveBodyparts(WORK)
-                        } <= creep.store.getCapacity()
+                (if (isSourceObject(target.unsafeCast<Identifiable>())) {
+                    workPower[workType.name]!! * creep.getActiveBodyparts(WORK)
+                } else {
+                    creep.getActiveBodyparts(WORK)
+                } >= creep.store.getFreeCapacity())
             }
         }
 
@@ -62,7 +61,7 @@ fun predict(creep: Creep, workType: Step, target: HasPosition): Boolean {
 
         }
 
-        else -> true
+        else -> return true
     }
     // 暂时没想到别的，摆烂了
 }

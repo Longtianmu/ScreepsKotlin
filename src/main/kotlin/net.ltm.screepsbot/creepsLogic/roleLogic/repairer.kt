@@ -1,4 +1,4 @@
-package net.ltm.screepsbot.creepsLogic
+package net.ltm.screepsbot.creepsLogic.roleLogic
 
 import net.ltm.screepsbot.utils.findClosest
 import net.ltm.screepsbot.utils.getUsableContainer

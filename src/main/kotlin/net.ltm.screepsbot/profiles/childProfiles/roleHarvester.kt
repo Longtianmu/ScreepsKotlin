@@ -13,7 +13,7 @@ private fun findKSource(creep: Creep, k: Int): Source? {
     return sources[k]
 }
 
-class RoleHarvester1() : HarvesterProfile() {
+class RoleHarvester1 : HarvesterProfile() {
     override fun initGenerator(creep: Creep) {
         findKSource(creep, 0)?.let { source ->
             getNearbyContainer(source)?.let {
@@ -29,7 +29,7 @@ class RoleHarvester1() : HarvesterProfile() {
     }
 }
 
-class RoleHarvester2() : HarvesterProfile() {
+class RoleHarvester2 : HarvesterProfile() {
     override fun initGenerator(creep: Creep) {
         findKSource(creep, 1)?.let { source ->
             getNearbyContainer(source)?.let {

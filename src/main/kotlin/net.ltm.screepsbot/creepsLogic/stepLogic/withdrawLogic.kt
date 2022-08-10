@@ -2,8 +2,8 @@ package net.ltm.screepsbot.creepsLogic.stepLogic
 
 import net.ltm.screepsbot.constant.Step
 import net.ltm.screepsbot.constant.TickReturnCode
+import net.ltm.screepsbot.constant.resourceMap
 import net.ltm.screepsbot.memory.option
-import net.ltm.screepsbot.memory.resourceMap
 import screeps.api.*
 
 fun stepWithdraw(creep: Creep): TickReturnCode {

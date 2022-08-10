@@ -1,20 +1,61 @@
 package net.ltm.screepsbot.mainLogic
 
 import net.ltm.screepsbot.constant.Role
-import net.ltm.screepsbot.memory.role
+import net.ltm.screepsbot.memory.*
 import screeps.api.*
 import screeps.api.structures.StructureSpawn
+import screeps.utils.mutableRecordOf
 import screeps.utils.unsafe.jsObject
 
-fun spawnCreeps(creeps: Array<Creep>, spawn: StructureSpawn) {
-
+fun spawnCreeps(creeps: List<Creep>, spawn: StructureSpawn) {
+    if (spawn.room.controller!!.level >= 4) {
+        spawnCreepsHigh(creeps, spawn)
+    } else {
+        spawnCreepsLow(creeps, spawn)
+    }
 }
 
-fun spawnCreepsHigh(creeps: Array<Creep>, spawn: StructureSpawn) {
+fun spawnCreepsHigh(creeps: List<Creep>, spawn: StructureSpawn) {
+    var baseBody = arrayOf<BodyPartConstant>(WORK, CARRY, MOVE)
+    if (spawn.room.energyAvailable < baseBody.sumOf { BODYPART_COST[it]!! }) {
+        return
+    }
 
+    val roleClass: String = when {
+        creeps.count { it.memory.roleClass == "RoleHarvester1" } < 3 -> "RoleHarvester1"
+
+        creeps.count { it.memory.roleClass == "RoleHarvester2" } < 3 -> "RoleHarvester2"
+
+        creeps.count { it.memory.roleClass == "RoleCarrier" } < 2 -> "RoleCarrier"
+
+        else -> return
+    }
+
+    val newName = "${roleClass}_${Game.time}"
+
+    baseBody = when (roleClass) {
+        "RoleCarrier" -> arrayOf(CARRY, CARRY, MOVE, MOVE)
+        else -> baseBody
+    }
+
+    val code = spawn.spawnCreep(baseBody, newName, options {
+        memory = jsObject<CreepMemory> {
+            this.roleClass = roleClass
+            this.init = false
+            this.option = mutableRecordOf()
+            this.taskList = arrayOf()
+            this.taskRetry = 0
+        }
+    })
+
+    when (code) {
+        OK -> console.log("使用部件${baseBody}生成了新Creep:${newName}")
+        ERR_BUSY, ERR_NOT_ENOUGH_ENERGY -> run { } // do nothing
+        else -> console.log("无法解析错误代码$code")
+    }
 }
 
-fun spawnCreepsLow(creeps: Array<Creep>, spawn: StructureSpawn) {
+fun spawnCreepsLow(creeps: List<Creep>, spawn: StructureSpawn) {
     var baseBody = arrayOf<BodyPartConstant>(WORK, CARRY, MOVE)
     if (spawn.room.energyAvailable < baseBody.sumOf { BODYPART_COST[it]!! }) {
         return
@@ -42,7 +83,9 @@ fun spawnCreepsLow(creeps: Array<Creep>, spawn: StructureSpawn) {
     }
 
     val code = spawn.spawnCreep(baseBody, newName, options {
-        memory = jsObject<CreepMemory> { this.role = role }
+        memory = jsObject<CreepMemory> {
+            this.role = role
+        }
     })
 
     when (code) {

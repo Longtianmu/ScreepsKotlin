@@ -1,4 +1,4 @@
-package net.ltm.screepsbot.creepsLogic
+package net.ltm.screepsbot.creepsLogic.roleLogic
 
 import net.ltm.screepsbot.memory.from
 import net.ltm.screepsbot.memory.to
@@ -60,8 +60,8 @@ fun Creep.sweep(assignedRoom: Room = this.room) {
 //            println(room.findGeneralStoreOwner())
             memory.to = findClosestNotEmpty(
                 room.findGeneralStoreOwner()
-                    .map { it.unsafeCast<StoreOwner>() }
-                    .filter { it?.store?.getFreeCapacity() > 0 }
+                    .mapNotNull { it.unsafeCast<StoreOwner?>() }
+                    .filter { it.store.getFreeCapacity() > 0 }
                     .toTypedArray()
             ).id
         } else {
