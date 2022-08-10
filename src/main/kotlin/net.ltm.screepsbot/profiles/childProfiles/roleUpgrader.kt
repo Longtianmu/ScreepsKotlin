@@ -16,6 +16,7 @@ class RoleUpgrader : UpgraderProfile() {
         if (container != "null") {
             creep.assignStepOption(Step.WITHDRAW, "Target", container)
             creep.assignStepOption(Step.WITHDRAW, "Type", RESOURCE_ENERGY.value)
+            creep.assignStepOption(Step.UPGRADE_CONTROLLER, "Target", creep.room.controller?.id!!)
         }
     }
 }

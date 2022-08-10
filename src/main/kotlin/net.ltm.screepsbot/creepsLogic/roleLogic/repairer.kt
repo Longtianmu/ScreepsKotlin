@@ -15,7 +15,6 @@ fun Creep.repairer() {
             room.find(FIND_STRUCTURES)
                 .filter { it.structureType in listOf(STRUCTURE_ROAD, STRUCTURE_CONTAINER) }
                 .filter { it.hits < it.hitsMax }
-                .toTypedArray()
         )
         if (target != null && repair(target) == ERR_NOT_IN_RANGE) {
             moveTo(target)

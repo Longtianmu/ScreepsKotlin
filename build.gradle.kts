@@ -7,7 +7,6 @@ import javax.net.ssl.X509TrustManager
 
 plugins {
     kotlin("js") version "1.7.10"
-    kotlin("plugin.serialization") version "1.7.10"
 }
 
 repositories {
@@ -25,7 +24,7 @@ val screepsHost: String? by project
 val screepsBranch: String? by project
 val branch = screepsBranch ?: "default"
 val host = screepsHost ?: "https://screeps.com"
-val minifiedJsDirectory: String = File(buildDir, "compileSync/main/developmentExecutable/kotlin").absolutePath
+val minifiedJsDirectory: String = File(buildDir, "minified-js").absolutePath
 
 kotlin {
     js {
@@ -40,7 +39,6 @@ kotlin {
                 )
             }
         }
-        binaries.executable()
     }
 }
 

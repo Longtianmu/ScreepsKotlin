@@ -46,7 +46,7 @@ fun getUsableContainer(room: Room): String {
         .filter { it.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }
         .sortedByDescending { it.store.getUsedCapacity(RESOURCE_ENERGY) }
 
-    id = if (room.storage != null) {
+    id = if (room.storage != null && room.storage!!.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
         room.storage!!.id
     } else if (containerCache.isNotEmpty()) {
         containerCache[0].id

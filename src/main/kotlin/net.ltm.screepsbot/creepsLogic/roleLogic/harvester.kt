@@ -5,7 +5,7 @@ import net.ltm.screepsbot.utils.getNextTarget
 import screeps.api.*
 import screeps.api.structures.Structure
 
-fun Creep.harvest(fromRoom: Room = this.room, toRoom: Room = this.room) {
+fun Creep.harvest() {
     if (memory.movePos == "WTF") {
         memory.movePos = room.find(FIND_SOURCES).random().id
     } else {

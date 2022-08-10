@@ -16,31 +16,40 @@ fun spawnCreeps(creeps: List<Creep>, spawn: StructureSpawn) {
 }
 
 fun spawnCreepsHigh(creeps: List<Creep>, spawn: StructureSpawn) {
-    var baseBody = arrayOf<BodyPartConstant>(WORK, CARRY, MOVE)
-    if (spawn.room.energyAvailable < baseBody.sumOf { BODYPART_COST[it]!! }) {
-        return
+    val baseBody = arrayOf<BodyPartConstant>(WORK, CARRY, MOVE)
+    var body = baseBody
+    val allEnergy = spawn.room.energyAvailable
+    val baseBodyCost = baseBody.sumOf { BODYPART_COST[it]!! }
+    if (allEnergy < baseBodyCost) return
+    val rate = allEnergy / 2 / baseBodyCost
+    for (i in 1 until rate) {
+        body = body.plus(baseBody)
     }
 
+    val maxCreepCount = spawn.room.memory.maxCountMap
     val roleClass: String = when {
-        creeps.count { it.memory.roleClass == "RoleHarvester1" } < 3 -> "RoleHarvester1"
+        creeps.count { it.memory.roleClass == "RoleHarvester1" } < maxCreepCount["RoleHarvester1"] -> "RoleHarvester1"
 
-        creeps.count { it.memory.roleClass == "RoleHarvester2" } < 3 -> "RoleHarvester2"
+        creeps.count { it.memory.roleClass == "RoleHarvester2" } < maxCreepCount["RoleHarvester2"] -> "RoleHarvester2"
 
-        creeps.count { it.memory.roleClass == "RoleCarrier" } < 2 -> "RoleCarrier"
+        creeps.count { it.memory.roleClass == "RoleCarrier" } < maxCreepCount["RoleCarrier"] -> "RoleCarrier"
 
-        creeps.count { it.memory.roleClass == "RoleBuilder" } < 2 -> "RoleBuilder"
+        creeps.count { it.memory.roleClass == "RoleUpgrader" } < maxCreepCount["RoleUpgrader"] -> "RoleUpgrader"
+
+        spawn.room.find(FIND_MY_CONSTRUCTION_SITES).isNotEmpty() &&
+                creeps.count { it.memory.roleClass == "RoleBuilder" } < maxCreepCount["RoleBuilder"] -> "RoleBuilder"
 
         else -> return
     }
 
     val newName = "${roleClass}_${Game.time}"
 
-    baseBody = when (roleClass) {
+    body = when (roleClass) {
         "RoleCarrier" -> arrayOf(CARRY, CARRY, MOVE, MOVE)
-        else -> baseBody
+        else -> body
     }
 
-    val code = spawn.spawnCreep(baseBody, newName, options {
+    val code = spawn.spawnCreep(body, newName, options {
         memory = jsObject<CreepMemory> {
             this.roleClass = roleClass
             this.init = false
@@ -73,7 +82,7 @@ fun spawnCreepsLow(creeps: List<Creep>, spawn: StructureSpawn) {
         spawn.room.find(FIND_MY_CONSTRUCTION_SITES).isNotEmpty() &&
                 creeps.count { it.memory.role == Role.BUILDER } < 2 -> Role.BUILDER
 
-        //creeps.count { it.memory.role == Role.SWEEPER } < 1 -> Role.SWEEPER
+        creeps.count { it.memory.role == Role.SWEEPER } < 1 -> Role.SWEEPER
         else -> return
     }
 

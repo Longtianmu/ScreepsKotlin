@@ -15,7 +15,8 @@ fun stepMove(creep: Creep): StepReturnCode {
     return if (targetID.isNullOrEmpty()) {
         StepReturnCode.ERR_NEED_RESET
     } else {
-        val target = Game.getObjectById<Identifiable>(targetID).unsafeCast<HasPosition>()
+        val target = Game.getObjectById<Identifiable>(targetID).unsafeCast<HasPosition?>()
+            ?: return StepReturnCode.ERR_NEED_RESET
         if (creep.pos.inRangeTo(target.pos, targetRange)) {
             return StepReturnCode.SKIP_TICK
         }

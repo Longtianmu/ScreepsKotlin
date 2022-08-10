@@ -32,9 +32,7 @@ fun Creep.wat() {
     }
 }
 
-fun Creep.sweep(assignedRoom: Room = this.room) {
-    // withdraw(): Ruin Tombstone
-    // pickup(): Resource
+fun Creep.sweep() {
     if (memory.from == "null") {
         val ruins = room.find(FIND_RUINS)
             .filter { it.store.getUsedCapacity() > 0 }
@@ -57,7 +55,6 @@ fun Creep.sweep(assignedRoom: Room = this.room) {
 
     if (memory.to == "null") {
         if (store.getUsedCapacity() - store.getUsedCapacity(RESOURCE_ENERGY)!! > 0) {
-//            println(room.findGeneralStoreOwner())
             memory.to = findClosestNotEmpty(
                 room.findGeneralStoreOwner()
                     .mapNotNull { it.unsafeCast<StoreOwner?>() }
