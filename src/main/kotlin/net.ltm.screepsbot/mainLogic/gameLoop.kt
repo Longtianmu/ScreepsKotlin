@@ -9,6 +9,7 @@ import screeps.api.Game
 import screeps.api.values
 
 fun gameLoop() {
+
     val rooms = Game.rooms.values
     cleanUnusedCreeps(Game.creeps)
     for (room in rooms) {
@@ -16,6 +17,7 @@ fun gameLoop() {
         val roomCreeps = Game.creeps.values.filter { it.room == room }
         val currentController = room.controller
         val spawns = room.find(FIND_MY_SPAWNS)
+
         for (spawn in spawns) {
             spawnCreeps(roomCreeps.toTypedArray(), spawn)
         }

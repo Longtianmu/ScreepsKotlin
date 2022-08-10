@@ -1,10 +1,13 @@
 import java.net.URL
 import java.util.*
-import javax.net.ssl.*
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.X509TrustManager
 
 
 plugins {
     kotlin("js") version "1.7.10"
+    kotlin("plugin.serialization") version "1.7.10"
 }
 
 repositories {
@@ -13,6 +16,7 @@ repositories {
 
 dependencies {
     implementation("io.github.exav:screeps-kotlin-types:1.13.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
     testImplementation(kotlin("test-js"))
 }
 
