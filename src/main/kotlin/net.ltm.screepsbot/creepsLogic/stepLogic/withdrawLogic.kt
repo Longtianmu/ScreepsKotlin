@@ -10,7 +10,7 @@ fun stepWithdraw(creep: Creep): StepReturnCode {
     val targetID = temp?.get("Target")
     val amount = temp?.get("Amount")
     val type = temp?.get("Type").unsafeCast<ResourceConstant>()
-    val target = Game.getObjectById<Identifiable>(targetID).unsafeCast<StoreOwner?>()
+    val target = Game.getObjectById<StoreOwner>(targetID)
         ?: return StepReturnCode.ERR_NEED_RESET
 
     return if (amount.isNullOrEmpty()) {

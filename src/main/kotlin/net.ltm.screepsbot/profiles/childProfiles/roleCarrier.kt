@@ -10,8 +10,9 @@ import screeps.api.*
 class RoleCarrier : CarrierProfile() {
     override fun initGenerator(creep: Creep) {
         creep.room.findStructure(STRUCTURE_CONTAINER)
-            .filter { it.unsafeCast<StoreOwner>().store.getUsedCapacity(RESOURCE_ENERGY) > 0 }
-            .sortedByDescending { it.unsafeCast<StoreOwner>().store.getUsedCapacity(RESOURCE_ENERGY) }
+            .map { it.unsafeCast<StoreOwner>() }
+            .filter { it.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }
+            .sortedByDescending { it.store.getUsedCapacity(RESOURCE_ENERGY) }
             .firstOrNull()
             ?.let {
                 creep.assignStepOption(Step.WITHDRAW, "Target", it.id)

@@ -9,7 +9,7 @@ import screeps.api.structures.Structure
 
 fun stepRepair(creep: Creep): StepReturnCode {
     val targetID = creep.memory.option[Step.REPAIR.name]?.get("Target")
-    val target = Game.getObjectById<Structure>(targetID).unsafeCast<Structure>()
+    val target = Game.getObjectById<Structure>(targetID) ?: return StepReturnCode.SKIP_TICK
 
     if (target.hits == target.hitsMax) {
         return StepReturnCode.SKIP_TICK
