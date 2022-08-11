@@ -23,7 +23,7 @@ fun stepMove(creep: Creep): StepReturnCode {
             return StepReturnCode.SKIP_TICK
         }
         ALGORITHM_ASTAR
-        when (creep.moveTo(target, options { reusePath = 2 })) {
+        when (creep.moveTo(target)) {
             OK -> StepReturnCode.STATUS_IN_PROGRESS
             ERR_NO_PATH -> {
                 creep.memory.taskRetry++
