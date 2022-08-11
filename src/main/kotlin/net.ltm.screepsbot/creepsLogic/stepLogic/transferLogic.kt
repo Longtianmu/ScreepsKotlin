@@ -5,9 +5,7 @@ import net.ltm.screepsbot.constant.StepReturnCode
 import net.ltm.screepsbot.memory.init
 import net.ltm.screepsbot.memory.option
 import net.ltm.screepsbot.memory.roleClass
-import net.ltm.screepsbot.memory.taskList
 import screeps.api.*
-import screeps.utils.mutableRecordOf
 
 fun stepTransfer(creep: Creep): StepReturnCode {
     creep.memory.option[Step.TRANSFER.name]?.let {
@@ -15,12 +13,16 @@ fun stepTransfer(creep: Creep): StepReturnCode {
         val amount = it["Amount"]
         val type = it["Type"].unsafeCast<ResourceConstant>()
         val target = Game.getObjectById<Identifiable>(targetID)
-        if (creep.memory.roleClass == "RoleCarrier" && creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0) {
+
+        if (creep.memory.roleClass in listOf(
+                "RoleCarrier",
+                "RoleFiller"
+            ) && creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0
+        ) {
             creep.memory.init = false
-            creep.memory.taskList = arrayOf()
-            creep.memory.option = mutableRecordOf()
             return StepReturnCode.SKIP_TICK
         }
+
         target?.let { targets ->
             if (targets.unsafeCast<StoreOwner>().store.getFreeCapacity() == 0) {
                 return StepReturnCode.SKIP_TICK

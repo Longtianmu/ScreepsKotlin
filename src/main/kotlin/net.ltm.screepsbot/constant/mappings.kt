@@ -1,5 +1,6 @@
 package net.ltm.screepsbot.constant
 
+import net.ltm.screepsbot.profiles.Profile
 import net.ltm.screepsbot.profiles.childProfiles.*
 
 val workRange = mapOf(
@@ -12,12 +13,15 @@ val workRange = mapOf(
     Pair(Step.REPAIR.name, 3)
 )
 
-val manualReflect = mapOf(
-    Pair("RoleHarvester1", RoleHarvester1()),
-    Pair("RoleHarvester2", RoleHarvester2()),
-    Pair("RoleUpgrader", RoleUpgrader()),
-    Pair("RoleCarrier", RoleCarrier()),
-    Pair("RoleBuilder", RoleBuilder()),
-    Pair("RoleRepairer", RoleRepairer()),
-    Pair("RoleFiller", RoleFiller())
-)
+fun bruceReflect(roleClassName: String): Profile? {
+    return when (roleClassName) {
+        "RoleHarvester1" -> RoleHarvester1()
+        "RoleHarvester2" -> RoleHarvester2()
+        "RoleUpgrader" -> RoleUpgrader()
+        "RoleCarrier" -> RoleCarrier()
+        "RoleBuilder" -> RoleBuilder()
+        "RoleRepairer" -> RoleRepairer()
+        "RoleFiller" -> RoleFiller()
+        else -> null
+    }
+}

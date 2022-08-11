@@ -31,8 +31,8 @@ abstract class BuilderProfile : Profile() {
 }
 
 abstract class RepairerProfile : Profile() {
-    override val preTask = mutableListOf<String>()
-    override val taskLoop = mutableListOf(Step.WITHDRAW.name, Step.REPAIR.name)
+    override val preTask = mutableListOf(Step.WITHDRAW.name)
+    override val taskLoop = mutableListOf(Step.REPAIR.name)
 }
 /*
 abstract class SweeperProfile : Profile() {

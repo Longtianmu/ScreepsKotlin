@@ -70,7 +70,7 @@ fun gameLoop() {
             } else if (brokenBuilds.isNotEmpty()) {
                 val it = brokenBuilds.first()
                 if (it.structureType in listOf(STRUCTURE_WALL, STRUCTURE_RAMPART)) {
-                    if (Game.time % 10 == 0) {
+                    if (Game.time % 5 == 0) {
                         tower.repair(it)
                     }
                 } else {

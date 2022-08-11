@@ -9,28 +9,34 @@ import screeps.api.Creep
 import screeps.api.get
 import screeps.utils.mutableRecordOf
 
-fun initials(creep: Creep, roleCls: Profile) {
-    if (!creep.memory.init) {
-        creep.memory.taskList = roleCls.preTask.toTypedArray() // taskList
-        roleCls.initGenerator(creep) // option
-        creep.memory.init = true
-    } else {
-        creep.memory.taskList = roleCls.taskLoop.toTypedArray()
-        roleCls.loopGenerator(creep) // option
+fun initials(creep: Creep) {
+    try {
+        val roleClass: Profile = bruceReflect(creep.memory.roleClass) ?: return
+        if (!creep.memory.init) {
+            creep.memory.option = mutableRecordOf()
+            creep.memory.taskList = roleClass.preTask.toTypedArray() // taskList
+            roleClass.initGenerator(creep) // option
+            creep.memory.init = true
+        } else {
+            creep.memory.taskList = roleClass.taskLoop.toTypedArray()
+            roleClass.loopGenerator(creep) // option
+        }
+        creep.memory.taskRetry = 0
+    } catch (e: Exception) {
+        println("${creep.memory.roleClass}初始化异常")
+        println(e)
     }
-    creep.memory.taskRetry = 0
 }
 
 fun Creep.tick(): TickReturnCode {
-    val roleCls = manualReflect[memory.roleClass]
-    if (roleCls == null) {
-        println("找不到类${memory.roleClass}")
+    if (memory.roleClass == "null") {
         return TickReturnCode.OK
     }
     if (memory.taskList.isEmpty()) {
-        initials(this, roleCls)
+        initials(this)
         return TickReturnCode.REWORK
     }
+
     val currentTask = memory.taskList.first()
     val returnCode: StepReturnCode = when (currentTask) {
         Step.MOVE.name -> {
