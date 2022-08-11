@@ -13,16 +13,6 @@ fun stepWithdraw(creep: Creep): StepReturnCode {
     val target = Game.getObjectById<Identifiable>(targetID).unsafeCast<StoreOwner?>()
         ?: return StepReturnCode.ERR_NEED_RESET
 
-    if (amount.isNullOrEmpty()) {
-        if (creep.store.getFreeCapacity() == 0) {
-            return StepReturnCode.SKIP_TICK
-        }
-    } else {
-        if (creep.store.getUsedCapacity(type) >= amount.toInt()) {
-            return StepReturnCode.SKIP_TICK
-        }
-    }
-
     return if (amount.isNullOrEmpty()) {
         when (creep.withdraw(target, type)) {
             ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET

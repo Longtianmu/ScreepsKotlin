@@ -50,12 +50,16 @@ fun spawnCreepsHigh(creeps: List<Creep>, spawn: StructureSpawn) {
     } else {
         body = baseBody
         val baseBodyCost = baseBody.sumOf { BODYPART_COST[it]!! }
-        val rate = allEnergy / 2 / baseBodyCost
+        var rate = allEnergy / 2 / baseBodyCost
+        if (roleClass.contains("RoleHarvester")) {
+            rate = 2
+        }
         if (allEnergy < baseBodyCost) return
         for (i in 1 until rate) {
             body = body.plus(baseBody)
         }
     }
+
     val newName = "${roleClass}_${Game.time}"
     val code = spawn.spawnCreep(body, newName, options {
         memory = jsObject<CreepMemory> {

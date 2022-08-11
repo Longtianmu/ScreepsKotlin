@@ -17,12 +17,14 @@ fun stepTransfer(creep: Creep): StepReturnCode {
             }
             return if (amount.isNullOrEmpty()) {
                 when (creep.transfer(targets.unsafeCast<StoreOwner>(), type)) {
+                    ERR_NOT_ENOUGH_RESOURCES -> StepReturnCode.ERR_NEED_RESET
                     ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
                     ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
                     else -> StepReturnCode.SKIP_TICK
                 }
             } else {
                 when (creep.transfer(targets.unsafeCast<StoreOwner>(), type, amount.toInt())) {
+                    ERR_NOT_ENOUGH_RESOURCES -> StepReturnCode.ERR_NEED_RESET
                     ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
                     ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
                     else -> StepReturnCode.SKIP_TICK

@@ -21,8 +21,8 @@ abstract class UpgraderProfile : Profile() {
 }
 
 abstract class CarrierProfile : Profile() {
-    override val preTask = mutableListOf<String>()
-    override val taskLoop = mutableListOf(Step.WITHDRAW.name, Step.TRANSFER.name)
+    override val preTask = mutableListOf(Step.WITHDRAW.name)
+    override val taskLoop = mutableListOf(Step.TRANSFER.name)
 }
 
 abstract class BuilderProfile : Profile() {

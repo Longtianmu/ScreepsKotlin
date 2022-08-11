@@ -1,5 +1,5 @@
 # Longtianmu‘s Screeps Bot
-Baseed from https://github.com/exaV/screeps-kotlin-starter
+Based on https://github.com/exaV/screeps-kotlin-types
 
 我不装了写中文吧
 
@@ -11,8 +11,6 @@ eg. 根据挖矿的ReturnCode进行下一步判定
 
 基于random的资源分配 随机挑选点
 
-v2：TODO
+v2：(RCL >= 4后自动切换为该行为)
 
 基于任务列表，配置文件的爬
-
-智能切换生成逻辑

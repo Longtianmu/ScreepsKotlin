@@ -8,9 +8,7 @@ import net.ltm.screepsbot.utils.getNextTarget
 import screeps.api.*
 
 class RoleCarrier : CarrierProfile() {
-    override fun initGenerator(creep: Creep) {}
-
-    override fun loopGenerator(creep: Creep) {
+    override fun initGenerator(creep: Creep) {
         creep.room.findStructure(STRUCTURE_CONTAINER)
             .filter { it.unsafeCast<StoreOwner>().store.getUsedCapacity(RESOURCE_ENERGY) > 0 }
             .sortedByDescending { it.unsafeCast<StoreOwner>().store.getUsedCapacity(RESOURCE_ENERGY) }
@@ -19,6 +17,9 @@ class RoleCarrier : CarrierProfile() {
                 creep.assignStepOption(Step.WITHDRAW, "Target", it.id)
                 creep.assignStepOption(Step.WITHDRAW, "Type", RESOURCE_ENERGY.value)
             }
+    }
+
+    override fun loopGenerator(creep: Creep) {
         val transfer = getNextTarget(creep.room)
         if (transfer != "null") {
             creep.assignStepOption(Step.TRANSFER, "Target", transfer)
