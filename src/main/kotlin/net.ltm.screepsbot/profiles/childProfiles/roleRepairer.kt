@@ -18,7 +18,7 @@ class RoleRepairer : RepairerProfile() {
             .filter { it.hits < it.hitsMax }
             .sortedBy { it.hits }
             .toTypedArray()
-            .first()
+            .firstOrNull() ?: return
         creep.assignStepOption(Step.REPAIR, "Target", target.id, false)
     }
 }
