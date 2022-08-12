@@ -1,10 +1,8 @@
 package net.ltm.screepsbot.creepsLogic.stepLogic
 
 import net.ltm.screepsbot.constant.Step
-import net.ltm.screepsbot.constant.StepReturnCode
-import net.ltm.screepsbot.memory.init
+import net.ltm.screepsbot.constant.returnCode.StepReturnCode
 import net.ltm.screepsbot.memory.option
-import net.ltm.screepsbot.memory.roleClass
 import screeps.api.*
 
 fun stepTransfer(creep: Creep): StepReturnCode {
@@ -14,12 +12,7 @@ fun stepTransfer(creep: Creep): StepReturnCode {
         val type = it["Type"].unsafeCast<ResourceConstant>()
         val target = Game.getObjectById<StoreOwner>(targetID)
 
-        if (creep.memory.roleClass in listOf(
-                "RoleCarrier",
-                "RoleFiller"
-            ) && creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0
-        ) {
-            creep.memory.init = false
+        if (creep.store.getUsedCapacity() == 0) {
             return StepReturnCode.SKIP_TICK
         }
 
@@ -31,12 +24,14 @@ fun stepTransfer(creep: Creep): StepReturnCode {
                 when (creep.transfer(targets, type)) {
                     ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
                     ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
+                    ERR_FULL -> StepReturnCode.OK
                     else -> StepReturnCode.SKIP_TICK
                 }
             } else {
                 when (creep.transfer(targets, type, amount.toInt())) {
                     ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
                     ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
+                    ERR_FULL -> StepReturnCode.OK
                     else -> StepReturnCode.SKIP_TICK
                 }
             }

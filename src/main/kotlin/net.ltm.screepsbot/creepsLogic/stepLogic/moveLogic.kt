@@ -1,7 +1,7 @@
 package net.ltm.screepsbot.creepsLogic.stepLogic
 
 import net.ltm.screepsbot.constant.Step
-import net.ltm.screepsbot.constant.StepReturnCode
+import net.ltm.screepsbot.constant.returnCode.StepReturnCode
 import net.ltm.screepsbot.memory.option
 import net.ltm.screepsbot.memory.taskRetry
 import screeps.api.*

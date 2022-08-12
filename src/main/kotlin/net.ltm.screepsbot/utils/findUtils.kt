@@ -2,26 +2,27 @@ package net.ltm.screepsbot.utils
 
 import screeps.api.*
 import screeps.api.structures.Structure
+import screeps.api.structures.StructureContainer
+import screeps.api.structures.StructureTower
 
-fun Room.findStructure(type: StructureConstant): List<Structure> {
+inline fun <reified T : Structure> Room.findStructure(): List<T> {
     return find(FIND_STRUCTURES)
-        .filter { it.structureType == type }
+        .filterIsInstance<T>()
 }
 
 fun Room.findGeneralStoreOwner(): List<StoreOwner?> {
     if (storage != null) return listOf(storage?.unsafeCast<StoreOwner>()) // 如果有storage，那就不考虑放到container里了
-    return findStructure(STRUCTURE_CONTAINER)
+    return findStructure<StructureContainer>()
         .map { it.unsafeCast<StoreOwner>() }
 }
 
-fun Room.findStructureNeedFills(): String {
+fun Room.findStructureNeedFills(): String? {
     val towers = this.find(FIND_MY_STRUCTURES)
-        .filter { it.structureType == STRUCTURE_TOWER }
-        .map { it.unsafeCast<StoreOwner>() }
+        .filterIsInstance<StructureTower>()
         .sortedBy { it.store.getUsedCapacity(RESOURCE_ENERGY) }
     return if (towers.isNotEmpty()) {
         towers.first().id
     } else {
-        "null"
+        null
     }
 }

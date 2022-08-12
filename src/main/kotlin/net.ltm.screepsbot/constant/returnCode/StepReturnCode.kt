@@ -1,4 +1,4 @@
-package net.ltm.screepsbot.constant
+package net.ltm.screepsbot.constant.returnCode
 
 enum class StepReturnCode {
     OK,
@@ -6,9 +6,5 @@ enum class StepReturnCode {
     ERR_NEED_MOVE,
     STATUS_IN_PROGRESS,
     SKIP_TICK,
-}
-
-enum class TickReturnCode {
-    OK,
-    REWORK
+    ERR_UNEXPECTED
 }

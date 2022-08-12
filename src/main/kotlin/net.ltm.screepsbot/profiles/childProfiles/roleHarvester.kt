@@ -1,52 +1,57 @@
 package net.ltm.screepsbot.profiles.childProfiles
 
 import net.ltm.screepsbot.constant.Step
+import net.ltm.screepsbot.constant.returnCode.GeneratorReturnCode
 import net.ltm.screepsbot.profiles.HarvesterProfile
-import net.ltm.screepsbot.utils.assignStepOption
+import net.ltm.screepsbot.utils.creepUtils.assignStepOption
 import net.ltm.screepsbot.utils.getNearbyContainer
-import screeps.api.*
+import net.ltm.screepsbot.utils.getNextTarget
+import net.ltm.screepsbot.utils.roomUtils.findKSource
+import screeps.api.Creep
+import screeps.api.RESOURCE_ENERGY
+import screeps.api.Source
+import screeps.api.value
 
-private fun findKSource(creep: Creep, k: Int): Source? {
-    val sources = creep.room.find(FIND_SOURCES)
-    return sources[k].unsafeCast<Source?>()
-}
-
-private fun letFunc(creep: Creep, source: Source, type: String) {
+private fun letFunc(creep: Creep, source: Source, type: String): GeneratorReturnCode {
     creep.assignStepOption(Step.HARVEST, "Target", source.id, false)
-    getNearbyContainer(source)?.let {
-        creep.assignStepOption(Step.TRANSFER, "Target", it.id, false)
-        creep.assignStepOption(Step.TRANSFER, "Type", type, false)
-    }
+    val target = (getNearbyContainer(source)?.id ?: getNextTarget(creep.room)) ?: return GeneratorReturnCode.NO_TARGET
+    creep.assignStepOption(Step.TRANSFER, "Target", target, false)
+    creep.assignStepOption(Step.TRANSFER, "Type", type, false)
+    return GeneratorReturnCode.OK
 }
 
 class RoleHarvester1 : HarvesterProfile() {
-    override fun initGenerator(creep: Creep) {
-        findKSource(creep, 0)?.let { source ->
-            getNearbyContainer(source)?.let {
-                creep.assignStepOption(Step.MOVE, "Target", it.id, false)
-            }
+    override fun initGenerator(creep: Creep): GeneratorReturnCode {
+        findKSource(creep.room, 0)?.let { source ->
+            val target = getNearbyContainer(source) ?: source
+            creep.assignStepOption(Step.MOVE, "Target", target.id, false)
         }
+        return GeneratorReturnCode.OK
     }
 
-    override fun loopGenerator(creep: Creep) {
-        findKSource(creep, 0)?.let {
-            letFunc(creep, it, "energy")
+    override fun loopGenerator(creep: Creep): GeneratorReturnCode {
+        var code: GeneratorReturnCode = GeneratorReturnCode.OK
+        findKSource(creep.room, 0)?.let {
+            code = letFunc(creep, it, "energy")
         }
+        return code
     }
 }
 
 class RoleHarvester2 : HarvesterProfile() {
-    override fun initGenerator(creep: Creep) {
-        findKSource(creep, 1)?.let { source ->
-            getNearbyContainer(source)?.let {
-                creep.assignStepOption(Step.MOVE, "Target", it.id, false)
-            }
+    override fun initGenerator(creep: Creep): GeneratorReturnCode {
+        findKSource(creep.room, 1)?.let { source ->
+            val target = getNearbyContainer(source) ?: source
+            creep.assignStepOption(Step.MOVE, "Target", target.id, false)
         }
+        return GeneratorReturnCode.OK
     }
 
-    override fun loopGenerator(creep: Creep) {
-        findKSource(creep, 1)?.let {
-            letFunc(creep, it, RESOURCE_ENERGY.value)
+    override fun loopGenerator(creep: Creep): GeneratorReturnCode {
+        var code: GeneratorReturnCode = GeneratorReturnCode.OK
+        findKSource(creep.room, 1)?.let {
+            code = letFunc(creep, it, RESOURCE_ENERGY.value)
         }
+        return code
     }
 }
