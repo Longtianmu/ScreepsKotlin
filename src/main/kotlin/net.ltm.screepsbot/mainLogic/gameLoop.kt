@@ -9,19 +9,13 @@ import screeps.api.values
 fun gameLoop() {
     cleanUnusedThings()
 
-    val rooms = Game.rooms.values
-    val roomsOwned = rooms.filter { it.controller?.my == true }
+    val roomsOwned = Game.rooms.values.filter { it.controller?.my == true }
 
     creepLoop()
     roomLoop(roomsOwned)
 
-
-    try {
-        if (Game.cpu.bucket == 10000) {
-            Game.cpu.generatePixel()
-        }
-    } catch (_: Exception) {
-
+    if (Game.cpu.bucket == 10000) {
+        Game.cpu.generatePixel()
     }
 }
 

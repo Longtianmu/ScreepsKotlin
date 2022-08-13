@@ -1,7 +1,7 @@
 package net.ltm.screepsbot.mainLogic.creepLoop
 
 import net.ltm.screepsbot.constant.returnCode.TickReturnCode
-import net.ltm.screepsbot.creepsLogic.tick
+import net.ltm.screepsbot.creepsLogic.tickLogic.tick
 import net.ltm.screepsbot.memory.init
 import screeps.api.Game
 import screeps.api.component1

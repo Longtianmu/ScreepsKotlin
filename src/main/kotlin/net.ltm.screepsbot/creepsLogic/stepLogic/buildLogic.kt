@@ -3,12 +3,16 @@ package net.ltm.screepsbot.creepsLogic.stepLogic
 import net.ltm.screepsbot.constant.Step
 import net.ltm.screepsbot.constant.returnCode.StepReturnCode
 import net.ltm.screepsbot.memory.option
+import net.ltm.screepsbot.utils.creepUtils.hasNoEnergy
 import screeps.api.*
 
 fun stepBuild(creep: Creep): StepReturnCode {
     val targetID = creep.memory.option[Step.BUILD.name]?.get("Target")
     val target = Game.getObjectById<ConstructionSite>(targetID)
         ?: return StepReturnCode.ERR_NEED_RESET
+    if (creep.hasNoEnergy()) {
+        return StepReturnCode.SKIP_TICK
+    }
     return when (creep.build(target)) {
         ERR_NOT_FOUND -> StepReturnCode.ERR_NEED_RESET
         ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE

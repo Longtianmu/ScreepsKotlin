@@ -10,6 +10,11 @@ inline fun <reified T : Structure> Room.findStructure(): List<T> {
         .filterIsInstance<T>()
 }
 
+inline fun <reified T : Structure> Room.findMyStructure(): List<T> {
+    return find(FIND_MY_STRUCTURES)
+        .filterIsInstance<T>()
+}
+
 fun Room.findGeneralStoreOwner(): List<StoreOwner?> {
     if (storage != null) return listOf(storage?.unsafeCast<StoreOwner>()) // 如果有storage，那就不考虑放到container里了
     return findStructure<StructureContainer>()

@@ -11,10 +11,10 @@ var CreepMemory.init: Boolean by memory { false }
 var CreepMemory.roleClass: String by memory { "" }
 var CreepMemory.taskList: Array<String> by memory { arrayOf() }
 var CreepMemory.option: MutableRecord<String, MutableRecord<String, String>> by memory { mutableRecordOf() }
-var CreepMemory.taskRetry: Int by memory { 0 }
 
 //RoomSpawnSystem
 var RoomMemory.maxCountMap: MutableRecord<String, Int> by memory { mutableRecordOf() }
+//var RoomMemory.spawnQueue: Array<String> by memory { arrayOf() }
 
 //Base count
 val maxCountMap: MutableRecord<String, Int> = mutableRecordOf(

@@ -1,6 +1,6 @@
 package net.ltm.screepsbot.mainLogic.roomLoop
 
-import net.ltm.screepsbot.mainLogic.spawnCreeps
+import net.ltm.screepsbot.mainLogic.spawnLoop.spawnCreeps
 import net.ltm.screepsbot.memory.maxCountMap
 import screeps.api.Creep
 import screeps.api.FIND_MY_SPAWNS
