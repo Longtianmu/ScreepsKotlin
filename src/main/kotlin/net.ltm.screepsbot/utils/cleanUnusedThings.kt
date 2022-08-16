@@ -13,7 +13,7 @@ fun cleanUnusedThings() {
     }
 
     for ((creepName, _) in Memory.creeps) {
-        if (Game.creeps[creepName] == null) {
+        if (Game.creeps[creepName] == null && creepName.isNotEmpty()) {
             console.log("删除失效Creep:$creepName")
             delete(Memory.creeps[creepName])
         }
