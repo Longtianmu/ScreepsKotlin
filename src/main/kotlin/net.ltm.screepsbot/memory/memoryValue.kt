@@ -1,6 +1,5 @@
 package net.ltm.screepsbot.memory
 
-import screeps.api.BodyPartConstant
 import screeps.api.CreepMemory
 import screeps.api.MutableRecord
 import screeps.api.RoomMemory
@@ -16,7 +15,6 @@ var CreepMemory.option: MutableRecord<String, MutableRecord<String, String>> by 
 //RoomSpawnSystem
 var RoomMemory.maxCountMap: MutableRecord<String, Int> by memory { mutableRecordOf() }
 var RoomMemory.maxWorkCountMap: MutableRecord<String, Int> by memory { mutableRecordOf() }
-var RoomMemory.spawnQueue: Array<Pair<String, BodyPartConstant>> by memory { arrayOf() }
 
 //FindKSource
 var RoomMemory.sourceList: Array<String> by memory { arrayOf() }

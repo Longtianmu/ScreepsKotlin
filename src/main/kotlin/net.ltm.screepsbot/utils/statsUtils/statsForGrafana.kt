@@ -1,4 +1,4 @@
-package net.ltm.screepsbot.mainLogic
+package net.ltm.screepsbot.utils.statsUtils
 
 fun exportStats() {
     js(

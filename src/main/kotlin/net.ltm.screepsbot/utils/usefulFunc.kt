@@ -20,13 +20,13 @@ fun getNextTarget(room: Room): String? {
         .filter { it.store.getFreeCapacity() > 0 }
         .sortedByDescending { it.store.getFreeCapacity() }
     return if (spawnCache.isNotEmpty()) {
-        spawnCache[0].id
+        spawnCache.first().id
     } else if (extensionCache.isNotEmpty()) {
-        extensionCache[0].id
+        extensionCache.first().id
     } else if (room.storage != null) {
         room.storage!!.id
     } else if (containerCache.isNotEmpty()) {
-        containerCache[0].id
+        containerCache.first().id
     } else {
         null
     }
@@ -45,9 +45,9 @@ fun getUsableContainer(room: Room): String? {
     return if (room.storage != null && room.storage!!.store.getUsedCapacity(RESOURCE_ENERGY) > 0) {
         room.storage!!.id
     } else if (containerCache.isNotEmpty()) {
-        containerCache[0].id
+        containerCache.first().id
     } else if (spawnCache.isNotEmpty()) {
-        spawnCache[0].id
+        spawnCache.first().id
     } else {
         null
     }

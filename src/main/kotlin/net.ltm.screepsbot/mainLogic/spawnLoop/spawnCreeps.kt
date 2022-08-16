@@ -18,7 +18,7 @@ fun spawnCreeps(spawn: StructureSpawn, roomCreeps: List<Creep>) {
     val roleClass = roles.first
     val roleBody = roles.second
 
-    val name = "${Game.shard.name}_${spawn.room.name}_${roleClass}"
+    val name = "${roleClass}_${Game.shard.name}_${spawn.room.name}_${Game.time}"
 
     val code = spawn.spawnCreep(roleBody, name, options {
         memory = jsObject<CreepMemory> {

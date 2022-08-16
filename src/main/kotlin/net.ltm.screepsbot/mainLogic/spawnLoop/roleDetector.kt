@@ -56,36 +56,11 @@ fun roleDetector(creeps: List<Creep>, spawn: StructureSpawn): Pair<String, Array
                 rate = 3
             }
         }
-        if (allEnergy < baseBodyCost * rate) return null
         for (i in 1 until rate) {
             body = body.plus(baseBody)
         }
     }
     return Pair(roleClass ?: return null, body)
-    /*
-    val maxWorkCount: MutableRecord<String, Int>  = spawn.room.memory.maxWorkCountMap
-    val nowCreepCount: MutableRecord<String, Int>
-    val nowWorkCount: MutableRecord<String, Int>
-    return when {
-        creeps.count { it.memory.roleClass == "RoleHarvester1" } < maxCreepCount["RoleHarvester1"] -> "RoleHarvester1"
-
-        findKSource(spawn.room, 1) != null &&
-                creeps.count { it.memory.roleClass == "RoleHarvester2" } < maxCreepCount["RoleHarvester2"] -> "RoleHarvester2"
-
-        spawn.room.findStructure<StructureContainer>().isNotEmpty() &&
-                creeps.count { it.memory.roleClass == "RoleCarrier" } < maxCreepCount["RoleCarrier"] -> "RoleCarrier"
-
-        creeps.count { it.memory.roleClass == "RoleUpgrader" } < maxCreepCount["RoleUpgrader"] -> "RoleUpgrader"
-
-        creeps.count { it.memory.roleClass == "RoleRepairer" } < maxCreepCount["RoleRepairer"] -> "RoleRepairer"
-
-        spawn.room.findStructureNeedFills() != null &&
-                creeps.count { it.memory.roleClass == "RoleFiller" } < maxCreepCount["RoleFiller"] -> "RoleFiller"
-
-        spawn.room.find(FIND_MY_CONSTRUCTION_SITES).isNotEmpty() && spawn.room.energyAvailable >= 300 &&
-                creeps.count { it.memory.roleClass == "RoleBuilder" } < maxCreepCount["RoleBuilder"] -> "RoleBuilder"
-
-        else -> null
-    }*/
+    TODO("使用人均期望值和最大爬数来控制生成")
 }
 

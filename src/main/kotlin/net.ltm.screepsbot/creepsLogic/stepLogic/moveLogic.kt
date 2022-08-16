@@ -8,12 +8,11 @@ import screeps.api.*
 fun stepMove(creep: Creep): StepReturnCode {
     val targetString = creep.memory.option[Step.MOVE.name]?.get("Target")
     val position = targetString?.split(",")
-
-    val target = if (position.toString() == targetString) {
+    val target = if (position?.first() == targetString) {
         val temp = Game.getObjectById<Identifiable>(targetString).unsafeCast<HasPosition?>()
             ?: return StepReturnCode.ERR_NEED_RESET
         RoomPosition(temp.pos.x, temp.pos.y, temp.pos.roomName)
-    } else if (position?.isNotEmpty() == true) {
+    } else if (position?.size == 3) {
         RoomPosition(position[0].toInt(), position[1].toInt(), position[2])
     } else {
         null
