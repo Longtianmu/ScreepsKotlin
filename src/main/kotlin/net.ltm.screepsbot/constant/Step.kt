@@ -9,5 +9,6 @@ enum class Step {
     WITHDRAW,
     PICKUP,
     UPGRADE_CONTROLLER,
+    CLAIM_CONTROLLER,
     RE_INIT
 }

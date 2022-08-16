@@ -1,5 +1,6 @@
 package net.ltm.screepsbot.mainLogic.roomLoop
 
+import net.ltm.screepsbot.mainLogic.spawnLoop.spawnLoop
 import screeps.api.Game
 import screeps.api.Room
 import screeps.api.values

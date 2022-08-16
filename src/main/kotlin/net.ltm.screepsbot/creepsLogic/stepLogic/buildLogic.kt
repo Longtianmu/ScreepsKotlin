@@ -9,8 +9,8 @@ import screeps.api.*
 fun stepBuild(creep: Creep): StepReturnCode {
     val targetID = creep.memory.option[Step.BUILD.name]?.get("Target")
     val target = Game.getObjectById<ConstructionSite>(targetID)
-        ?: return StepReturnCode.ERR_NEED_RESET
-    if (creep.hasNoEnergy()) {
+        ?: return StepReturnCode.SKIP_TICK
+    if (target.progress == target.progressTotal || creep.hasNoEnergy()) {
         return StepReturnCode.SKIP_TICK
     }
     return when (creep.build(target)) {

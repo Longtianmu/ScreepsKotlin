@@ -22,7 +22,8 @@ val reflection = hashMapOf(
     Pair("RoleCarrier", RoleCarrier()),
     Pair("RoleBuilder", RoleBuilder()),
     Pair("RoleRepairer", RoleRepairer()),
-    Pair("RoleFiller", RoleFiller())
+    Pair("RoleFiller", RoleFiller()),
+    Pair("RoleClaimer", RoleClaimer())
 )
 
 fun bruceChecker(checker: String, creep: Creep): Boolean {

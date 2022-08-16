@@ -6,14 +6,23 @@ import net.ltm.screepsbot.memory.option
 import screeps.api.*
 
 fun stepMove(creep: Creep): StepReturnCode {
-    val targetID = creep.memory.option[Step.MOVE.name]?.get("Target")
-    val target = Game.getObjectById<Identifiable>(targetID).unsafeCast<HasPosition?>()
-        ?: return StepReturnCode.ERR_NEED_RESET
+    val targetString = creep.memory.option[Step.MOVE.name]?.get("Target")
+    val position = targetString?.split(",")
+
+    val target = if (position.toString() == targetString) {
+        val temp = Game.getObjectById<Identifiable>(targetString).unsafeCast<HasPosition?>()
+            ?: return StepReturnCode.ERR_NEED_RESET
+        RoomPosition(temp.pos.x, temp.pos.y, temp.pos.roomName)
+    } else if (position?.isNotEmpty() == true) {
+        RoomPosition(position[0].toInt(), position[1].toInt(), position[2])
+    } else {
+        null
+    } ?: return StepReturnCode.ERR_NEED_RESET
 
     val targetRange = if (creep.memory.option[Step.MOVE.name]?.get("Range") != null) {
         creep.memory.option[Step.MOVE.name]?.get("Range")!!.toInt()
     } else 1
-    if (creep.pos.inRangeTo(target.pos, targetRange)) {
+    if (creep.pos.inRangeTo(target, targetRange)) {
         return StepReturnCode.SKIP_TICK
     }
     return when (creep.moveTo(target)) {

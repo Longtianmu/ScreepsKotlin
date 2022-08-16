@@ -1,11 +1,11 @@
 package net.ltm.screepsbot.mainLogic.roomLoop
 
+import net.ltm.screepsbot.utils.findMyStructure
 import screeps.api.*
 import screeps.api.structures.StructureTower
 
 fun towerLoop(room: Room, roomCreeps: List<Creep>) {
-    val towers = room.find(FIND_MY_STRUCTURES)
-        .filterIsInstance<StructureTower>()
+    val towers = room.findMyStructure<StructureTower>()
 
     if (towers.isNotEmpty()) {
         val creepEnemy = room.find(FIND_HOSTILE_CREEPS).sortedByDescending { it.hits }

@@ -1,7 +1,7 @@
-package net.ltm.screepsbot.mainLogic.roomLoop
+package net.ltm.screepsbot.mainLogic.spawnLoop
 
-import net.ltm.screepsbot.mainLogic.spawnLoop.spawnCreeps
 import net.ltm.screepsbot.memory.maxCountMap
+import net.ltm.screepsbot.memory.maxWorkCountMap
 import screeps.api.Creep
 import screeps.api.FIND_MY_SPAWNS
 import screeps.api.Room
@@ -11,10 +11,15 @@ fun spawnLoop(room: Room, roomCreeps: List<Creep>) {
     if (room.memory.maxCountMap.size != maxCountMap.size) {
         room.memory.maxCountMap = maxCountMap
     }
+    if (room.memory.maxWorkCountMap.size != maxWorkCountMap.size) {
+        room.memory.maxWorkCountMap = maxWorkCountMap
+    }
 
     val spawns = room.find(FIND_MY_SPAWNS)
-
     for (spawn in spawns) {
-        spawnCreeps(roomCreeps, spawn)
+        if (spawn.spawning != null) {
+            continue
+        }
+        spawnCreeps(spawn, roomCreeps)
     }
 }

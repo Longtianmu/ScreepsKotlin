@@ -18,5 +18,4 @@ fun cleanUnusedThings() {
             delete(Memory.creeps[creepName])
         }
     }
-
 }
