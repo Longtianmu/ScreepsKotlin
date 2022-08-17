@@ -14,7 +14,6 @@ fun stepUpdateControllerLogic(creep: Creep): StepReturnCode {
     if (creep.hasNoEnergy()) {
         return StepReturnCode.SKIP_TICK
     }
-
     return if (target != null) {
         when (creep.upgradeController(target)) {
             ERR_NOT_IN_RANGE -> return StepReturnCode.ERR_NEED_MOVE

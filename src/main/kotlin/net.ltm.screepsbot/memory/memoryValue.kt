@@ -1,5 +1,6 @@
 package net.ltm.screepsbot.memory
 
+import screeps.api.BodyPartConstant
 import screeps.api.CreepMemory
 import screeps.api.MutableRecord
 import screeps.api.RoomMemory
@@ -15,6 +16,8 @@ var CreepMemory.option: MutableRecord<String, MutableRecord<String, String>> by 
 //RoomSpawnSystem
 var RoomMemory.maxCountMap: MutableRecord<String, Int> by memory { mutableRecordOf() }
 var RoomMemory.maxWorkCountMap: MutableRecord<String, Int> by memory { mutableRecordOf() }
+var RoomMemory.roomPriority: Array<String> by memory { arrayOf() }
+var RoomMemory.spawnQueue: Array<Pair<String, Array<BodyPartConstant>>> by memory { arrayOf() }
 
 //FindKSource
 var RoomMemory.sourceList: Array<String> by memory { arrayOf() }
@@ -31,13 +34,22 @@ val maxCountMap: MutableRecord<String, Int> = mutableRecordOf(
 )
 
 val maxWorkCountMap: MutableRecord<String, Int> = mutableRecordOf(
-    Pair("RoleHarvester1", 12),
-    Pair("RoleHarvester2", 12),
+    Pair("RoleHarvester1", 10),
+    Pair("RoleHarvester2", 10),
     Pair("RoleUpgrader", 4),
-    Pair("RoleCarrier", 5),
-    Pair("RoleBuilder", 3),
-    Pair("RoleRepairer", 1),
-    Pair("RoleFiller", 1)
+    Pair("RoleCarrier", 10),
+    Pair("RoleBuilder", 4),
+    Pair("RoleRepairer", 2),
+    Pair("RoleFiller", 4)
 )
 
+val roomPriority: Array<String> = arrayOf(
+    "RoleHarvester1",
+    "RoleHarvester2",
+    "RoleCarrier",
+    "RoleUpgrader",
+    "RoleFiller",
+    "RoleRepairer",
+    "RoleBuilder",
+)
 

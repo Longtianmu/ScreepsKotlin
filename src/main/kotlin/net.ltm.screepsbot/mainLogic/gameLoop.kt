@@ -14,9 +14,9 @@ fun gameLoop() {
     creepLoop()
     roomLoop(roomsOwned)
 
-    if (Game.cpu.bucket == 10000) {
+    /*if (Game.cpu.bucket == 10000) {
         Game.cpu.generatePixel()
-    }
+    }*/
 }
 
 

@@ -13,9 +13,11 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://www.jitpack.io") }
 }
 
 dependencies {
+    //implementation("com.github.exaV:screeps-kotlin-types:1.14.0")
     implementation("io.github.exav:screeps-kotlin-types:1.13.0")
 }
 
