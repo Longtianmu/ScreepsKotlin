@@ -2,7 +2,9 @@ package net.ltm.screepsbot.mainLogic.spawnLoop
 
 import net.ltm.screepsbot.constant.reflection
 import net.ltm.screepsbot.memory.*
+import net.ltm.screepsbot.utils.findStructure
 import screeps.api.*
+import screeps.api.structures.StructureContainer
 
 fun spawnQueuePusher(creeps: List<Creep>, room: Room) {
     val allEnergy = room.energyAvailable
@@ -31,13 +33,27 @@ fun spawnQueuePusher(creeps: List<Creep>, room: Room) {
     }
 
     for (i in roomPriority) {
-        if ((nowCreepCount[i] >= maxCreepCount[i]) || (nowWorkCount[i] >= maxWorkCount[i])) {
+        if ((nowCreepCount[i] >= maxCreepCount[i]) || (nowWorkCount[i] >= maxWorkCount[i]))
             continue
+        val baseClass = reflection[i]
+        when (baseClass?.requireBuildings) {
+            "CONTAINER" -> {
+                if (room.findStructure<StructureContainer>().isEmpty())
+                    continue
+            }
+
+            "CONSTRUCTION_SITE" -> {
+                if (room.find(FIND_MY_CONSTRUCTION_SITES).isEmpty())
+                    continue
+            }
+
+            null -> {}
         }
-        val tag = reflection[i]?.tag!!
+        val tag = baseClass?.tag!!
         val baseBody = arrayOf(tag, MOVE)
         var body = baseBody
         var rate = allEnergy / 2 / baseBody.sumOf { BODYPART_COST[it]!! }
+        if (rate < 1) rate = 1
         if (rate > maxWorkCount[i]) {
             rate = maxWorkCount[i]!!
         }
@@ -50,6 +66,8 @@ fun spawnQueuePusher(creeps: List<Creep>, room: Room) {
                 body = body.plus(CARRY)
             }
         }
+        if (body.sumOf { BODYPART_COST[it]!! } > allEnergy)
+            continue
         room.memory.spawnQueue = room.memory.spawnQueue.plus(Pair(i, body))
         return
     }

@@ -14,21 +14,16 @@ fun stepUpdateControllerLogic(creep: Creep): StepReturnCode {
     if (creep.hasNoEnergy()) {
         return StepReturnCode.SKIP_TICK
     }
-    return if (target != null) {
-        when (creep.upgradeController(target)) {
-            ERR_NOT_IN_RANGE -> return StepReturnCode.ERR_NEED_MOVE
-            ERR_INVALID_TARGET -> return StepReturnCode.ERR_NEED_RESET
-            OK -> return StepReturnCode.STATUS_IN_PROGRESS
-            ERR_NOT_ENOUGH_RESOURCES -> StepReturnCode.SKIP_TICK
-            else -> StepReturnCode.ERR_NEED_RESET
-        }
+    val code = if (target != null) {
+        creep.upgradeController(target)
     } else {
-        when (creep.room.controller?.let { creep.upgradeController(it) }) {
-            ERR_INVALID_TARGET -> return StepReturnCode.ERR_NEED_RESET
-            ERR_NOT_IN_RANGE -> return StepReturnCode.ERR_NEED_MOVE
-            OK -> return StepReturnCode.STATUS_IN_PROGRESS
-            ERR_NOT_ENOUGH_RESOURCES -> StepReturnCode.SKIP_TICK
-            else -> StepReturnCode.ERR_NEED_RESET
-        }
+        creep.room.controller?.let { creep.upgradeController(it) }
+    }
+    return when (code) {
+        ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
+        ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
+        OK -> StepReturnCode.STATUS_IN_PROGRESS
+        ERR_NOT_ENOUGH_RESOURCES -> StepReturnCode.SKIP_TICK
+        else -> StepReturnCode.ERR_NEED_RESET
     }
 }

@@ -17,10 +17,15 @@ fun stepHarvest(creep: Creep): StepReturnCode {
             targetInit.unsafeCast<Mineral>()
         }
 
+        "Deposit" -> {
+            targetInit.unsafeCast<Deposit>()
+        }
+
         else -> {
             targetInit.unsafeCast<Source>()
         }
     }
+
     if ((target is Source && target.energyCapacity == 0)) {
         return StepReturnCode.STATUS_IN_PROGRESS
     }

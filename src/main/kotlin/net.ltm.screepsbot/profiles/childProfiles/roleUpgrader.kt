@@ -6,14 +6,20 @@ import net.ltm.screepsbot.constant.returnCode.GeneratorReturnCode
 import net.ltm.screepsbot.profiles.UpgraderProfile
 import net.ltm.screepsbot.utils.creepUtils.assignStepOption
 import net.ltm.screepsbot.utils.getUsableContainer
-import screeps.api.Creep
-import screeps.api.RESOURCE_ENERGY
-import screeps.api.value
+import net.ltm.screepsbot.utils.roomUtils.lookInRange
+import screeps.api.*
+import screeps.api.structures.StructureLink
 
 class RoleUpgrader : UpgraderProfile() {
     override fun initGenerator(creep: Creep): GeneratorReturnCode {
-        val container = getUsableContainer(creep.room) ?: return GeneratorReturnCode.FAILED
-        creep.assignStepOption(Step.WITHDRAW, "Target", container)
+        val links =
+            creep.room.controller?.pos?.lookInRange(LOOK_STRUCTURES, 4)?.filterIsInstance<StructureLink>()
+                ?.firstOrNull {
+                    it.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+                }?.id
+        val container = getUsableContainer(creep.room)
+        val target = links ?: container ?: return GeneratorReturnCode.FAILED
+        creep.assignStepOption(Step.WITHDRAW, "Target", target)
         creep.assignStepOption(Step.WITHDRAW, "Type", RESOURCE_ENERGY.value)
         return GeneratorReturnCode.OK
     }

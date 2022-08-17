@@ -4,25 +4,30 @@ import net.ltm.screepsbot.utils.roomUtils.lookInRange
 import screeps.api.*
 import screeps.api.structures.StructureContainer
 import screeps.api.structures.StructureExtension
+import screeps.api.structures.StructureLink
 import screeps.api.structures.StructureSpawn
 
 fun getNextTarget(room: Room): String? {
-    val spawnCache = room.find(FIND_MY_STRUCTURES)
-        .filterIsInstance<StructureSpawn>()
+    val spawnCache = room.findMyStructure<StructureSpawn>()
         .filter { it.store.getFreeCapacity(RESOURCE_ENERGY) > 0 }
         .sortedByDescending { it.store.getFreeCapacity(RESOURCE_ENERGY) }
-    val extensionCache = room.find(FIND_MY_STRUCTURES)
-        .filterIsInstance<StructureExtension>()
+    val extensionCache = room.findMyStructure<StructureExtension>()
         .filter { it.store.getFreeCapacity(RESOURCE_ENERGY) > 0 }
         .sortedByDescending { it.store.getFreeCapacity(RESOURCE_ENERGY) }
-    val containerCache = room.find(FIND_STRUCTURES)
-        .filterIsInstance<StructureContainer>()
+    val linkCache = room.findMyStructure<StructureLink>()
+        .filter {
+            it.pos.lookInRange(LOOK_SOURCES, 3).isNotEmpty()
+                    && it.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+        }
+    val containerCache = room.findMyStructure<StructureContainer>()
         .filter { it.store.getFreeCapacity() > 0 }
         .sortedByDescending { it.store.getFreeCapacity() }
     return if (spawnCache.isNotEmpty()) {
         spawnCache.first().id
     } else if (extensionCache.isNotEmpty()) {
         extensionCache.first().id
+    } else if (linkCache.isNotEmpty()) {
+        linkCache.first().id
     } else if (room.storage != null) {
         room.storage!!.id
     } else if (containerCache.isNotEmpty()) {

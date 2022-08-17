@@ -15,7 +15,11 @@ import screeps.api.value
 private fun letFunc(creep: Creep, source: Source, type: String): GeneratorReturnCode {
     creep.assignStepOption(Step.HARVEST, "Target", source.id, false)
     creep.assignStepOption(Step.HARVEST, "Type", "Source", false)
-    val target = (getNearbyContainer(source)?.id ?: getNextTarget(creep.room)) ?: return GeneratorReturnCode.NO_TARGET
+    val target = ((if (creep.room.energyAvailable <= 300) {
+        null
+    } else {
+        getNearbyContainer(source)?.id
+    }) ?: getNextTarget(creep.room)) ?: return GeneratorReturnCode.NO_TARGET
     creep.assignStepOption(Step.TRANSFER, "Target", target, false)
     creep.assignStepOption(Step.TRANSFER, "Type", type, false)
     return GeneratorReturnCode.OK

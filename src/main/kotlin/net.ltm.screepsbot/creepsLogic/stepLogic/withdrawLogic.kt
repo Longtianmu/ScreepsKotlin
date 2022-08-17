@@ -15,17 +15,15 @@ fun stepWithdraw(creep: Creep): StepReturnCode {
     if (creep.store.getFreeCapacity(type) == 0) {
         return StepReturnCode.SKIP_TICK
     }
-    return if (amount.isNullOrEmpty()) {
-        when (creep.withdraw(target, type)) {
-            ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
-            ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
-            else -> StepReturnCode.OK
-        }
+
+    val code = if (amount.isNullOrEmpty()) {
+        creep.withdraw(target, type)
     } else {
-        when (creep.withdraw(target, type, amount.toInt())) {
-            ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
-            ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
-            else -> StepReturnCode.OK
-        }
+        creep.withdraw(target, type, amount.toInt())
+    }
+    return when (code) {
+        ERR_INVALID_TARGET -> StepReturnCode.ERR_NEED_RESET
+        ERR_NOT_IN_RANGE -> StepReturnCode.ERR_NEED_MOVE
+        else -> StepReturnCode.OK
     }
 }

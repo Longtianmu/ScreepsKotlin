@@ -37,8 +37,7 @@ fun Creep.tick(): TickReturnCode {
             }
         }
     } catch (e: Exception) {
-        println("Tick期间发生错误")
-        e.printStackTrace()
+        println("Tick期间发生错误\n${e.stackTraceToString()}")
     }
     val currentTask = memory.taskList.first()
     return stepReturnCodeProcessor(this, stepDetector(this, currentTask), currentTask)
