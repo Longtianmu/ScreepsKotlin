@@ -1,5 +1,8 @@
 package net.ltm.screepsbot.mainLogic.spawnLoop
 
+import net.ltm.screepsbot.constant.maxCountMap
+import net.ltm.screepsbot.constant.maxWorkCountMap
+import net.ltm.screepsbot.constant.roomPriority
 import net.ltm.screepsbot.memory.maxCountMap
 import net.ltm.screepsbot.memory.maxWorkCountMap
 import net.ltm.screepsbot.memory.roomPriority

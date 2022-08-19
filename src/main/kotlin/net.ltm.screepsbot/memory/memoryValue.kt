@@ -22,34 +22,3 @@ var RoomMemory.spawnQueue: Array<Pair<String, Array<BodyPartConstant>>> by memor
 //FindKSource
 var RoomMemory.sourceList: Array<String> by memory { arrayOf() }
 
-//RoomSpawnValue
-val maxCountMap: MutableRecord<String, Int> = mutableRecordOf(
-    Pair("RoleHarvester1", 3),
-    Pair("RoleHarvester2", 3),
-    Pair("RoleUpgrader", 3),
-    Pair("RoleCarrier", 5),
-    Pair("RoleBuilder", 3),
-    Pair("RoleRepairer", 1),
-    Pair("RoleFiller", 1)
-)
-
-val maxWorkCountMap: MutableRecord<String, Int> = mutableRecordOf(
-    Pair("RoleHarvester1", 8),
-    Pair("RoleHarvester2", 8),
-    Pair("RoleUpgrader", 4),
-    Pair("RoleCarrier", 8),
-    Pair("RoleBuilder", 4),
-    Pair("RoleRepairer", 2),
-    Pair("RoleFiller", 4)
-)
-
-val roomPriority: Array<String> = arrayOf(
-    "RoleHarvester1",
-    "RoleHarvester2",
-    "RoleCarrier",
-    "RoleUpgrader",
-    "RoleFiller",
-    "RoleRepairer",
-    "RoleBuilder",
-)
-

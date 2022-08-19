@@ -18,7 +18,7 @@ class RoleCarrier : CarrierProfile() {
         val target = creep.room.findStructure<StructureContainer>()
             .filter { it.store.getUsedCapacity(RESOURCE_ENERGY) > 0 }
             .sortedByDescending { it.store.getUsedCapacity(RESOURCE_ENERGY) }
-            .firstOrNull()
+            .firstOrNull() ?: creep.room.storage
         return if (target != null) {
             creep.assignStepOption(Step.WITHDRAW, "Target", target.id)
             creep.assignStepOption(Step.WITHDRAW, "Type", RESOURCE_ENERGY.value)

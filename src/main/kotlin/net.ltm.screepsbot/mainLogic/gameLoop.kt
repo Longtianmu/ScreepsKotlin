@@ -8,7 +8,6 @@ import screeps.api.values
 
 fun gameLoop() {
     cleanUnusedThings()
-
     val roomsOwned = Game.rooms.values.filter { it.controller?.my == true }
 
     creepLoop()

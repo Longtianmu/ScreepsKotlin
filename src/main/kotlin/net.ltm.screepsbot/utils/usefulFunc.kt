@@ -22,10 +22,10 @@ fun getNextTarget(room: Room): String? {
     val containerCache = room.findMyStructure<StructureContainer>()
         .filter { it.store.getFreeCapacity() > 0 }
         .sortedByDescending { it.store.getFreeCapacity() }
-    return if (spawnCache.isNotEmpty()) {
+    val target = if (spawnCache.isNotEmpty()) {
         spawnCache.first().id
     } else if (extensionCache.isNotEmpty()) {
-        extensionCache.first().id
+        extensionCache.random().id
     } else if (linkCache.isNotEmpty()) {
         linkCache.first().id
     } else if (room.storage != null) {
@@ -35,6 +35,7 @@ fun getNextTarget(room: Room): String? {
     } else {
         null
     }
+    return target
 }
 
 fun getUsableContainer(room: Room): String? {

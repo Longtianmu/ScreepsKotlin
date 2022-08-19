@@ -61,9 +61,9 @@ fun spawnQueuePusher(creeps: List<Creep>, room: Room) {
             body = body.plus(baseBody)
         }
         if (tag in listOf(WORK)) {
-            body = body.plus(CARRY)
-            for (k in 2..rate / 3) {
-                body = body.plus(CARRY)
+            body = body.plus(CARRY).plus(WORK)
+            for (k in 2..rate / 2) {
+                body = body.plus(CARRY).plus(WORK)
             }
         }
         if (body.sumOf { BODYPART_COST[it]!! } > allEnergy)

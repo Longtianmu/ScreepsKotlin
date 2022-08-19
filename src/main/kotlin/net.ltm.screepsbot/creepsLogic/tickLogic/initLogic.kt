@@ -32,7 +32,7 @@ fun Creep.init(): InitialReturnCode {
         }
 
         GeneratorReturnCode.FAILED -> {
-            println(resultString + "发生了错误，请查看是否存在Null情况")
+            println("${resultString}发生了错误，请查看是否存在Null情况")
             InitialReturnCode.FAILED
         }
 

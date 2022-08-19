@@ -10,5 +10,7 @@ enum class Step {
     PICKUP,
     UPGRADE_CONTROLLER,
     CLAIM_CONTROLLER,
+    DISMANTLE,
+    ATTACK,
     RE_INIT
 }

@@ -26,6 +26,7 @@ fun stepMove(creep: Creep): StepReturnCode {
     }
     return when (creep.moveTo(target)) {
         OK -> StepReturnCode.STATUS_IN_PROGRESS
+        ERR_TIRED -> StepReturnCode.STATUS_IN_PROGRESS
         ERR_NO_PATH -> {
             StepReturnCode.STATUS_IN_PROGRESS
         }

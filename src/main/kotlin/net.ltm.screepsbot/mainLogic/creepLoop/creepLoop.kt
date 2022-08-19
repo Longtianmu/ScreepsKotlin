@@ -18,7 +18,8 @@ fun creepLoop() {
             TickReturnCode.OK -> {}
 
             TickReturnCode.FAILED -> {
-                println("${creep.name}发生了Tick错误\n内存为${JSON.stringify(creep.memory)}")
+                println("${creep.name}发生了Tick错误")
+                println("内存为${JSON.stringify(creep.memory)}")
                 creep.memory.init = false
             }
         }
